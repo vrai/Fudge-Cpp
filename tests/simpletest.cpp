@@ -16,6 +16,7 @@
 #include "simpletest.hpp"
 #include <sstream>
 #include <stdexcept>
+#include <stdio.h>
 #ifndef FUDGE_HAVE_MATH_H
 #   include <math.h>
 #endif
@@ -64,7 +65,7 @@ Suite::Suite ( const std::string & name )
     : m_name ( name )
 {
     // Redirect stdout to a file
-    if ( ! std::freopen ( ( "test_" + m_name + ".log" ).c_str ( ), "wb", stdout ) )
+    if ( ! freopen ( ( "test_" + m_name + ".log" ).c_str ( ), "wb", stdout ) )
     {
         std::cerr << "Failed to redirect stdout to \"test_" << m_name << ".log\"" << std::endl;
         exit ( 1 );
