@@ -22,6 +22,9 @@
 #ifdef FUDGE_HAVE_TIME_H
 #   include <time.h>
 #endif
+#ifndef FUDGE_HAVE_STDLIB_H
+#   include <stdlib.h>
+#endif
 #include "ansi_compat.h"
 
 namespace
@@ -61,7 +64,11 @@ Suite::Suite ( const std::string & name )
     : m_name ( name )
 {
     // Redirect stdout to a file
-    std::freopen ( ( "test_" + m_name + ".log" ).c_str ( ), "wb", stdout );
+    if ( ! std::freopen ( ( "test_" + m_name + ".log" ).c_str ( ), "wb", stdout ) )
+    {
+        std::cerr << "Failed to redirect stdout to \"test_" << m_name << ".log\"" << std::endl;
+        exit ( 1 );
+    }
 
     // Log output header
     log ( ) << "Log file for test suite \"" << m_name << "\"" << std::endl;

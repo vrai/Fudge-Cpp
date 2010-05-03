@@ -15,6 +15,9 @@
  */
 #include "simpletest.hpp"
 #include "fudge-cpp/exception.hpp"
+#ifdef FUDGE_HAVE_STRING_H
+#   include <string.h>
+#endif
 
 DEFINE_TEST( FudgeException )
     using fudge::FudgeException;
