@@ -22,8 +22,8 @@ AC_CONFIG_HEADER(include/config.h)
 AC_CONFIG_FILES([Makefile \
                  src/Makefile \
                  include/Makefile \
-                 include/fudge-cpp/Makefile])
-#                 tests/Makefile])
+                 include/fudge-cpp/Makefile \
+                 tests/Makefile])
 AM_INIT_AUTOMAKE
 
 ### Define the API version, of the format CURRENT:REVISION:AGE. Changes to
@@ -64,11 +64,19 @@ AC_CHECK_HEADERS_ONCE(stdarg.h)
 AC_CHECK_HEADERS_ONCE(time.h)
 
 ### Check for the presence of key functions missing (or renamed) in some compilers
-AC_CHECK_FUNC(dup, AC_DEFINE(HAS_DUP, 1, [Define to 1 if dup is available.]))
 AC_CHECK_FUNC(isnan, AC_DEFINE(HAS_ISNAN, 1, [Define to 1 if isnan is available.]))
 AC_CHECK_FUNC(getpid, AC_DEFINE(HAS_GETPID, 1, [Define to 1 if getpid is available.]))
+AC_CHECK_FUNC(gmtime_r, AC_DEFINE(HAS_GMTIME_R, 1, [Define to 1 if gmtime_r is available.]))
+AC_CHECK_FUNC(_gmtime_s, AC_DEFINE(HAS__GMTIME_S, 1, [Define to 1 if _gmtime_s is available.]))
 AC_CHECK_FUNC(snprintf, AC_DEFINE(HAS_SPRINTF, 1, [Define to 1 if snprintf is available.]))
 AC_CHECK_FUNC(sprintf_s, AC_DEFINE(HAS_SPRINTF_S, 1, [Define to 1 if sprintf_s is available.]))
+
+### Check that FudgeC is present
+AC_CHECK_HEADER(fudge/fudge.h,
+                [AC_DEFINE(HAS_FUDGE_C, 1, [Define to 1 if <fudge/fudge.h> is present])],
+                [AC_MSG_ERROR([Cannot find <fudge/fudge.h> - Is the FudgeC library installed?])])
+
+AC_SEARCH_LIBS(Fudge_init, [fudgec], [], [AC_MSG_ERROR([Failed to find FudgeC library - is it installed?])])
 
 ### Crank the warnings up to maximum
 AX_CFLAGS_WARN_ALL

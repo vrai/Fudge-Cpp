@@ -1,0 +1,20 @@
+#!/bin/sh
+rm -f config.cache
+touch ChangeLog
+if [ "`which glibtoolize 2> /dev/null`" = "" ]
+then
+    echo "- libtoolize."
+    libtoolize
+else
+    echo "- glibtoolize."
+    glibtoolize
+fi
+echo "- aclocal."
+aclocal -I m4
+echo "- autoheader."
+autoheader
+echo "- autoconf."
+autoconf
+echo "- automake."
+automake -a
+exit

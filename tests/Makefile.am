@@ -11,15 +11,22 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
- 
-lib_LTLIBRARIES = libfudgecpp.la
 
-INCLUDES = -I$(top_srcdir)/include
+TESTS = test_exception
+# TODO Add test_string
 
-noinst_HEADERS =
+check_PROGRAMS = $(TESTS)
 
-libfudgecpp_la_SOURCES = exception.cpp \
-                         string.cpp
+noinst_HEADERS = simpletest.hpp
 
-libfudgecpp_la_LDFLAGS = -no-undefined -version-info @API_VERSION@
+INCLUDES = -I$(top_srcdir)/include \
+           -I$(top_srcdir)/src
 
+FRAMEWORK_SOURCE = simpletest.cpp
+EXTRA_DIST = test_data
+
+test_exception_SOURCES = test_exception.cpp $(FRAMEWORK_SOURCE)
+test_exception_LDADD = $(top_builddir)/src/libfudgecpp.la
+
+clean-local:
+	$(RM) -f *.log

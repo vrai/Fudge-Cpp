@@ -15,11 +15,9 @@
 ACLOCAL_AMFLAGS = -I m4
 
 EXTRA_DIST = reconf configure examples
-SUBDIRS = src include
-# TODO Add "tests"
+SUBDIRS = src include tests
 
-DIST_SUBDIRS = src include
-# TODO Add "tests"
+DIST_SUBDIRS = src include tests
 
 distclean-local: CleanExamples
 	$(RM) -f _configs.sed

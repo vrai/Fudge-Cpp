@@ -14,7 +14,8 @@
  
 libfudgecpp_includedir = $(includedir)/fudge-cpp
 
-libfudgecpp_include_HEADERS = string.hpp
+libfudgecpp_include_HEADERS = exception.hpp \
+                              string.hpp
 
 distclean-local:
 	$(RM) config.h
