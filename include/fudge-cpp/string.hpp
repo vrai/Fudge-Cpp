@@ -46,20 +46,32 @@ class FudgeString
 
         ~FudgeString ( );
 
-        // TODO size
-        // TODO data
-        // TODO getAsASCIIZ
-        // TODO getAsStdString
-        // TODO getAsUTF16
-        // TODO getAsUTF32
+        size_t size ( ) const;
+        const fudge_byte * data ( ) const;
+
+        // Conversion methods - will allocate the memory required to hold the
+        // converted strings. It is the job of the calling code to release
+        // this memory if/when required. If called against a NULL string the
+        // pointer and size (if present) are set to zero.
+        void convertToASCIIZ ( char * & string ) const;
+        void convertToUTF16 ( fudge_byte * & bytes, size_t & numbytes ) const;
+        void convertToUTF32 ( fudge_byte * & bytes, size_t & numbytes ) const;
+
+        // As convertToASCIIZ, but wraps the C string within a std::string and
+        // returns it.. If called against a NULL string, an empty std::string
+        // is returned.
+        std::string convertToStdString ( ) const;
+
+        const FudgeStringImpl * raw ( ) const;
 
     private:
         FudgeStringImpl * m_string;
 };
-        
-// TODO operator< 
-// TODO operator>
-// TODO operator==
+
+bool operator< ( const FudgeString & left, const FudgeString & right );
+bool operator> ( const FudgeString & left, const FudgeString & right );
+bool operator== ( const FudgeString & left, const FudgeString & right );
+bool operator!= ( const FudgeString & left, const FudgeString & right );
 
 }
 

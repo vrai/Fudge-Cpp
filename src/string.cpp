@@ -100,5 +100,83 @@ FudgeString::~FudgeString ( )
         FudgeException::throwOnError ( FudgeString_release ( m_string ) );
 }
 
+size_t FudgeString::size ( ) const
+{
+    return FudgeString_getSize ( m_string );
+}
+
+const fudge_byte * FudgeString::data ( ) const
+{
+    return FudgeString_getData ( m_string );
+}
+
+void FudgeString::convertToASCIIZ ( char * & string ) const
+{
+    if ( m_string )
+        FudgeException::throwOnError ( FudgeString_convertToASCIIZ ( &string, m_string ) );
+    else
+        string = 0;
+}
+
+std::string FudgeString::convertToStdString ( ) const
+{
+    char * cstring ( 0 );
+    convertToASCIIZ ( cstring );
+    if ( cstring )
+        return std::string ( cstring );
+    return std::string ( );
+}
+
+void FudgeString::convertToUTF16 ( fudge_byte * & bytes, size_t & numbytes ) const
+{
+    if ( m_string )
+        FudgeException::throwOnError ( FudgeString_convertToUTF16 ( &bytes, &numbytes, m_string ) );
+    else
+    {
+        bytes = 0;
+        numbytes = 0;
+    }
+}
+
+void FudgeString::convertToUTF32 ( fudge_byte * & bytes, size_t & numbytes ) const
+{
+    if ( m_string )
+        FudgeException::throwOnError ( FudgeString_convertToUTF32 ( &bytes, &numbytes, m_string ) );
+    else
+    {
+        bytes = 0;
+        numbytes = 0;
+    }
+}
+
+const FudgeStringImpl * FudgeString::raw ( ) const
+{
+    return m_string;
+}
+
+bool operator< ( const FudgeString & left, const FudgeString & right )
+{
+    return FudgeString_compare ( const_cast<FudgeStringImpl *> ( left.raw ( ) ),
+                                 const_cast<FudgeStringImpl *> ( right.raw ( ) ) ) < 0;
+}
+
+bool operator> ( const FudgeString & left, const FudgeString & right )
+{
+    return FudgeString_compare ( const_cast<FudgeStringImpl *> ( left.raw ( ) ),
+                                 const_cast<FudgeStringImpl *> ( right.raw ( ) ) ) > 0;
+}
+
+bool operator== ( const FudgeString & left, const FudgeString & right )
+{
+    return FudgeString_compare ( const_cast<FudgeStringImpl *> ( left.raw ( ) ),
+                                 const_cast<FudgeStringImpl *> ( right.raw ( ) ) ) == 0;
+}
+
+bool operator!= ( const FudgeString & left, const FudgeString & right )
+{
+    return FudgeString_compare ( const_cast<FudgeStringImpl *> ( left.raw ( ) ),
+                                 const_cast<FudgeStringImpl *> ( right.raw ( ) ) ) != 0;
+}
+
 }
 
