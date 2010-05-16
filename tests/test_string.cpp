@@ -89,14 +89,14 @@ DEFINE_TEST( CreateFromUTF8 )
     size_t convertedSize ( 0 );
     string.convertToUTF16 ( convertedBytes, convertedSize );
     TEST_EQUALS_MEMORY( convertedBytes, convertedSize, StringTest_utf16Source + 2, sizeof ( StringTest_utf16Source ) - 2 );
-    delete convertedBytes;
+    free ( convertedBytes );
 
     // Test UTF32 output - as for the UTF16 test the lack of a BOM in the
     // source string means the comparison output has to have the first
     // four bytes skipped.
     string.convertToUTF32 ( convertedBytes, convertedSize );
     TEST_EQUALS_MEMORY( convertedBytes, convertedSize, StringTest_utf32Source + 4, sizeof ( StringTest_utf32Source ) - 4 );
-    delete convertedBytes;
+    free ( convertedBytes );
 END_TEST
 
 DEFINE_TEST( CreateFromUTF16 )
@@ -115,12 +115,12 @@ DEFINE_TEST( CreateFromUTF16 )
     size_t convertedSize ( 0 );
     string.convertToUTF16 ( convertedBytes, convertedSize );
     TEST_EQUALS_MEMORY( convertedBytes, convertedSize, StringTest_utf16Source, sizeof ( StringTest_utf16Source ) );
-    delete convertedBytes;
+    free ( convertedBytes );
 
     // Test UTF32 output
     string.convertToUTF32 ( convertedBytes, convertedSize );
     TEST_EQUALS_MEMORY( convertedBytes, convertedSize, StringTest_utf32Source, sizeof ( StringTest_utf32Source ) );
-    delete convertedBytes;
+    free ( convertedBytes );
 END_TEST
 
 DEFINE_TEST( CreateFromUTF32 )
@@ -139,12 +139,12 @@ DEFINE_TEST( CreateFromUTF32 )
     size_t convertedSize ( 0 );
     string.convertToUTF16 ( convertedBytes, convertedSize );
     TEST_EQUALS_MEMORY( convertedBytes, convertedSize, StringTest_utf16Source, sizeof ( StringTest_utf16Source ) );
-    delete convertedBytes;
+    free ( convertedBytes );
 
     // Test UTF32 output
     string.convertToUTF32 ( convertedBytes, convertedSize );
     TEST_EQUALS_MEMORY( convertedBytes, convertedSize, StringTest_utf32Source, sizeof ( StringTest_utf32Source ) );
-    delete convertedBytes;
+    free ( convertedBytes );
 END_TEST
 
 DEFINE_TEST( Comparison )

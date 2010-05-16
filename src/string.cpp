@@ -123,7 +123,11 @@ std::string FudgeString::convertToStdString ( ) const
     char * cstring ( 0 );
     convertToASCIIZ ( cstring );
     if ( cstring )
-        return std::string ( cstring );
+    {
+        std::string copy ( cstring );
+        free ( cstring );
+        return copy;
+    }
     return std::string ( );
 }
 
