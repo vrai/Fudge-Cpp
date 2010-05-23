@@ -61,10 +61,10 @@ class string
         // is returned.
         std::string convertToStdString ( ) const;
 
-        const FudgeStringImpl * raw ( ) const;
+        const FudgeString raw ( ) const;
 
     private:
-        FudgeStringImpl * m_string;
+        FudgeString m_string;
 };
 
 bool operator< ( const fudge::string & left, const fudge::string & right );

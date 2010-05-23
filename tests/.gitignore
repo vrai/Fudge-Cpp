@@ -1,4 +1,5 @@
 test_*.log
 test_datetime
 test_exception
+test_optional
 test_string

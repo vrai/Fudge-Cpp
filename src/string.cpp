@@ -19,7 +19,7 @@
 
 namespace
 {
-    typedef FudgeStatus ( *FudgeStringUTFConstructor ) ( FudgeStringImpl * *, const fudge_byte *, size_t );
+    typedef FudgeStatus ( *FudgeStringUTFConstructor ) ( FudgeString *, const fudge_byte *, size_t );
 
     inline FudgeStringUTFConstructor getConstructorForType ( fudge::string::UnicodeType type )
     {
@@ -80,7 +80,7 @@ string::string ( const string & source )
 
 string & string::operator= ( const string & source )
 {
-    FudgeStringImpl * oldstring ( m_string );
+    FudgeString oldstring ( m_string );
 
     if ( source.m_string )
     {
@@ -92,6 +92,8 @@ string & string::operator= ( const string & source )
 
     if ( oldstring )
         exception::throwOnError ( FudgeString_release ( oldstring ) );
+
+    return *this;
 }
 
 string::~string ( )
@@ -153,33 +155,33 @@ void string::convertToUTF32 ( fudge_byte * & bytes, size_t & numbytes ) const
     }
 }
 
-const FudgeStringImpl * string::raw ( ) const
+const FudgeString string::raw ( ) const
 {
     return m_string;
 }
 
 bool operator< ( const fudge::string & left, const fudge::string & right )
 {
-    return FudgeString_compare ( const_cast<FudgeStringImpl *> ( left.raw ( ) ),
-                                 const_cast<FudgeStringImpl *> ( right.raw ( ) ) ) < 0;
+    return FudgeString_compare ( const_cast<FudgeString> ( left.raw ( ) ),
+                                 const_cast<FudgeString> ( right.raw ( ) ) ) < 0;
 }
 
 bool operator> ( const fudge::string & left, const fudge::string & right )
 {
-    return FudgeString_compare ( const_cast<FudgeStringImpl *> ( left.raw ( ) ),
-                                 const_cast<FudgeStringImpl *> ( right.raw ( ) ) ) > 0;
+    return FudgeString_compare ( const_cast<FudgeString> ( left.raw ( ) ),
+                                 const_cast<FudgeString> ( right.raw ( ) ) ) > 0;
 }
 
 bool operator== ( const fudge::string & left, const fudge::string & right )
 {
-    return FudgeString_compare ( const_cast<FudgeStringImpl *> ( left.raw ( ) ),
-                                 const_cast<FudgeStringImpl *> ( right.raw ( ) ) ) == 0;
+    return FudgeString_compare ( const_cast<FudgeString> ( left.raw ( ) ),
+                                 const_cast<FudgeString> ( right.raw ( ) ) ) == 0;
 }
 
 bool operator!= ( const fudge::string & left, const fudge::string & right )
 {
-    return FudgeString_compare ( const_cast<FudgeStringImpl *> ( left.raw ( ) ),
-                                 const_cast<FudgeStringImpl *> ( right.raw ( ) ) ) != 0;
+    return FudgeString_compare ( const_cast<FudgeString> ( left.raw ( ) ),
+                                 const_cast<FudgeString> ( right.raw ( ) ) ) != 0;
 }
 
 }
