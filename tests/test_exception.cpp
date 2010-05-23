@@ -20,23 +20,23 @@
 #endif
 
 DEFINE_TEST( FudgeException )
-    using fudge::FudgeException;
+    using fudge::exception;
 
     // Make sure that FUDGE_OK doesn't trigger an exception
-    TEST_THROWS_NOTHING( FudgeException::throwOnError ( FUDGE_OK ) );
+    TEST_THROWS_NOTHING( exception::throwOnError ( FUDGE_OK ) );
 
     // Now make sure that it will throw for non-FUDGE_OK values
-    TEST_THROWS_EXCEPTION( FudgeException::throwOnError ( FUDGE_OUT_OF_MEMORY ), FudgeException );
-    TEST_THROWS_EXCEPTION( FudgeException::throwOnError ( FUDGE_NULL_POINTER ), FudgeException );
+    TEST_THROWS_EXCEPTION( exception::throwOnError ( FUDGE_OUT_OF_MEMORY ), exception );
+    TEST_THROWS_EXCEPTION( exception::throwOnError ( FUDGE_NULL_POINTER ), exception );
 
     // Make sure that the correct text is being retrieved for the codes
-    FudgeException outOfBytes ( FUDGE_OUT_OF_BYTES );
+    exception outOfBytes ( FUDGE_OUT_OF_BYTES );
     std::string actual ( FudgeStatus_strerror ( FUDGE_OUT_OF_BYTES ) );
     TEST_EQUALS_MEMORY ( outOfBytes.what ( ), strlen ( outOfBytes.what ( ) ), actual.c_str ( ), actual.size ( ) );
     TEST_EQUALS_INT( outOfBytes.status ( ), FUDGE_OUT_OF_BYTES );
 
     FudgeStatus unknownStatus ( static_cast<FudgeStatus> ( 99999 ) );
-    FudgeException unknown ( unknownStatus );
+    exception unknown ( unknownStatus );
     actual = FudgeStatus_strerror ( unknownStatus );
     TEST_EQUALS_MEMORY ( unknown.what ( ), strlen ( unknown.what ( ) ), actual.c_str ( ), actual.size ( ) );
     TEST_EQUALS_INT( unknown.status ( ), unknownStatus );

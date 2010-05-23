@@ -12,8 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-TESTS = test_exception \
-        test_string
+TESTS = test_exception  \
+        test_datetime   \
+        test_string 
 
 check_PROGRAMS = $(TESTS)
 
@@ -27,6 +28,9 @@ EXTRA_DIST = test_data
 
 test_exception_SOURCES = test_exception.cpp $(FRAMEWORK_SOURCE)
 test_exception_LDADD = $(top_builddir)/src/libfudgecpp.la
+
+test_datetime_SOURCES = test_datetime.cpp $(FRAMEWORK_SOURCE)
+test_datetime_LDADD = $(top_builddir)/src/libfudgecpp.la
 
 test_string_SOURCES = test_string.cpp $(FRAMEWORK_SOURCE)
 test_string_LDADD = $(top_builddir)/src/libfudgecpp.la

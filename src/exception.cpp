@@ -17,27 +17,27 @@
 
 namespace fudge {
 
-FudgeException::FudgeException ( FudgeStatus status )
+exception::exception ( FudgeStatus status )
     : std::runtime_error ( FudgeStatus_strerror ( status ) )
     , m_status ( status )
 {
 }
 
-FudgeException::FudgeException ( const FudgeException & exception )
-    : std::runtime_error ( exception )
-    , m_status ( exception.m_status )
+exception::exception ( const exception & source )
+    : std::runtime_error ( source )
+    , m_status ( source.m_status )
 {
 }
 
-FudgeStatus FudgeException::status ( ) const
+FudgeStatus exception::status ( ) const
 {
     return m_status;
 }
 
-void FudgeException::throwOnError ( FudgeStatus status )
+void exception::throwOnError ( FudgeStatus status )
 {
     if ( status != FUDGE_OK )
-        throw FudgeException ( status );
+        throw exception ( status );
 }
 
 }

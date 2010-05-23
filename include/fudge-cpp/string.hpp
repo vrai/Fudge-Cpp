@@ -16,13 +16,12 @@
 #ifndef INC_FUDGE_CPP_STRING_HPP
 #define INC_FUDGE_CPP_STRING_HPP
 
-#include "fudge-cpp/exception.hpp"
 #include "fudge/types.h"
 #include <string>
 
 namespace fudge {
 
-class FudgeString
+class string
 {
     public:
         enum UnicodeType
@@ -31,20 +30,20 @@ class FudgeString
         };
 
         // NULL string constructor
-        FudgeString ( );
+        string ( );
 
         // ASCII string constructors
-        FudgeString ( const std::string & source );
-        FudgeString ( const char * chars, size_t numchars );
-        FudgeString ( const char * chars );
+        string ( const std::string & source );
+        string ( const char * chars, size_t numchars );
+        string ( const char * chars );
 
         // Unicode string constructor
-        FudgeString ( const fudge_byte * bytes, size_t numbytes, UnicodeType type );
+        string ( const fudge_byte * bytes, size_t numbytes, UnicodeType type );
 
-        FudgeString ( const FudgeString & source );
-        FudgeString & operator= ( const FudgeString & source );
+        string ( const string & source );
+        string & operator= ( const string & source );
 
-        ~FudgeString ( );
+        ~string ( );
 
         size_t size ( ) const;
         const fudge_byte * data ( ) const;
@@ -68,10 +67,10 @@ class FudgeString
         FudgeStringImpl * m_string;
 };
 
-bool operator< ( const FudgeString & left, const FudgeString & right );
-bool operator> ( const FudgeString & left, const FudgeString & right );
-bool operator== ( const FudgeString & left, const FudgeString & right );
-bool operator!= ( const FudgeString & left, const FudgeString & right );
+bool operator< ( const fudge::string & left, const fudge::string & right );
+bool operator> ( const fudge::string & left, const fudge::string & right );
+bool operator== ( const fudge::string & left, const fudge::string & right );
+bool operator!= ( const fudge::string & left, const fudge::string & right );
 
 }
 

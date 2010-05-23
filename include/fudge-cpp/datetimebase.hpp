@@ -13,27 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef INC_FUDGE_CPP_EXCEPTION_HPP
-#define INC_FUDGE_CPP_EXCEPTION_HPP
+#ifndef INC_FUDGE_CPP_DATETIMEBASE_HPP
+#define INC_FUDGE_CPP_DATETIMEBASE_HPP
 
-#include "fudge-cpp/config.h"
-#include "fudge/status.h"
-#include <stdexcept>
+#include "fudge/types.h"
 
 namespace fudge {
 
-class exception : public std::runtime_error
+class datetimebase
 {
     public:
-        exception ( FudgeStatus status );
-        exception ( const exception & source );
+        inline const FudgeDateTime & raw ( ) const { return m_datetime; }
 
-        FudgeStatus status ( ) const;
+    protected:
+        datetimebase ( );
+        virtual ~datetimebase ( );
 
-        static void throwOnError ( FudgeStatus status );
-
-    private:
-        FudgeStatus m_status;
+        FudgeDateTime m_datetime;
 };
 
 }

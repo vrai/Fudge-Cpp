@@ -18,7 +18,8 @@ INCLUDES = -I$(top_srcdir)/include
 
 noinst_HEADERS =
 
-libfudgecpp_la_SOURCES = exception.cpp \
+libfudgecpp_la_SOURCES = datetime.cpp   \
+                         exception.cpp  \
                          string.cpp
 
 libfudgecpp_la_LDFLAGS = -no-undefined -version-info @API_VERSION@

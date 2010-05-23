@@ -43,23 +43,23 @@ static const fudge_byte StringTest_asciiConverted [] = { 0x3f, 0x20, 0x3f, 0x3f,
 
 
 DEFINE_TEST( CreateFromASCII )
-    using fudge::FudgeException;
-    using fudge::FudgeString;
+    using fudge::exception;
+    using fudge::string;
 
     // Test NULL failure cases
-    TEST_THROWS_EXCEPTION( FudgeString failure ( static_cast<const char *> ( 0 ), 10 ), FudgeException );
+    TEST_THROWS_EXCEPTION( string failure ( static_cast<const char *> ( 0 ), 10 ), exception );
 
     // Test NULL sucess cases
-    FudgeString empty;
+    string empty;
     TEST_EQUALS_INT( empty.size ( ), 0 );
     TEST_EQUALS_TRUE( ! empty.data ( ) );
-    FudgeString emptyPtr ( static_cast<const char *> ( 0 ) );
+    string emptyPtr ( static_cast<const char *> ( 0 ) );
     TEST_EQUALS_INT( emptyPtr.size ( ), 0 );
     TEST_EQUALS_TRUE( ! emptyPtr.data ( ) );
 
     // Construct strings and check content
-    FudgeString stringOne ( "String One", 10 );
-    FudgeString stringTwo ( std::string ( "String Two" ) );
+    string stringOne ( "String One", 10 );
+    string stringTwo ( std::string ( "String Two" ) );
 
     TEST_EQUALS_MEMORY( stringOne.data ( ), stringOne.size ( ), "String One", 10 );
     TEST_EQUALS_MEMORY( stringTwo.data ( ), stringTwo.size ( ), "String Two", 10 );
@@ -73,92 +73,92 @@ DEFINE_TEST( CreateFromASCII )
 END_TEST
 
 DEFINE_TEST( CreateFromUTF8 )
-    using fudge::FudgeString;
+    using fudge::string;
 
     // Construct and check contents
-    FudgeString string ( StringTest_utf8Source, sizeof ( StringTest_utf8Source ), FudgeString::UTF8 );
-    TEST_EQUALS_MEMORY( string.data ( ), string.size ( ), StringTest_utf8Source, sizeof ( StringTest_utf8Source ) );
+    string stringOne ( StringTest_utf8Source, sizeof ( StringTest_utf8Source ), string::UTF8 );
+    TEST_EQUALS_MEMORY( stringOne.data ( ), stringOne.size ( ), StringTest_utf8Source, sizeof ( StringTest_utf8Source ) );
 
     // Test ASCII output
-    const std::string converted ( string.convertToStdString ( ) );
+    const std::string converted ( stringOne.convertToStdString ( ) );
     TEST_EQUALS_MEMORY( converted.c_str ( ), converted.size ( ), StringTest_asciiConverted, sizeof ( StringTest_asciiConverted ) );
 
     // Test UTF16 output - first two bytes of UTF16 output jumped because the
     // source string had no BOM, so the converted string also lacks one.
     fudge_byte * convertedBytes ( 0 );
     size_t convertedSize ( 0 );
-    string.convertToUTF16 ( convertedBytes, convertedSize );
+    stringOne.convertToUTF16 ( convertedBytes, convertedSize );
     TEST_EQUALS_MEMORY( convertedBytes, convertedSize, StringTest_utf16Source + 2, sizeof ( StringTest_utf16Source ) - 2 );
     free ( convertedBytes );
 
     // Test UTF32 output - as for the UTF16 test the lack of a BOM in the
     // source string means the comparison output has to have the first
     // four bytes skipped.
-    string.convertToUTF32 ( convertedBytes, convertedSize );
+    stringOne.convertToUTF32 ( convertedBytes, convertedSize );
     TEST_EQUALS_MEMORY( convertedBytes, convertedSize, StringTest_utf32Source + 4, sizeof ( StringTest_utf32Source ) - 4 );
     free ( convertedBytes );
 END_TEST
 
 DEFINE_TEST( CreateFromUTF16 )
-    using fudge::FudgeString;
+    using fudge::string;
 
     // Construct and check contents
-    FudgeString string ( StringTest_utf16Source, sizeof ( StringTest_utf16Source ), FudgeString::UTF16 );
-    TEST_EQUALS_MEMORY( string.data ( ), string.size ( ), StringTest_utf8Converted, sizeof ( StringTest_utf8Converted ) );
+    string stringOne ( StringTest_utf16Source, sizeof ( StringTest_utf16Source ), string::UTF16 );
+    TEST_EQUALS_MEMORY( stringOne.data ( ), stringOne.size ( ), StringTest_utf8Converted, sizeof ( StringTest_utf8Converted ) );
 
     // Test ASCII output
-    const std::string converted ( string.convertToStdString ( ) );
+    const std::string converted ( stringOne.convertToStdString ( ) );
     TEST_EQUALS_MEMORY( converted.c_str ( ), converted.size ( ), StringTest_asciiConverted, sizeof ( StringTest_asciiConverted ) );
 
     // Test UTF16 output
     fudge_byte * convertedBytes ( 0 );
     size_t convertedSize ( 0 );
-    string.convertToUTF16 ( convertedBytes, convertedSize );
+    stringOne.convertToUTF16 ( convertedBytes, convertedSize );
     TEST_EQUALS_MEMORY( convertedBytes, convertedSize, StringTest_utf16Source, sizeof ( StringTest_utf16Source ) );
     free ( convertedBytes );
 
     // Test UTF32 output
-    string.convertToUTF32 ( convertedBytes, convertedSize );
+    stringOne.convertToUTF32 ( convertedBytes, convertedSize );
     TEST_EQUALS_MEMORY( convertedBytes, convertedSize, StringTest_utf32Source, sizeof ( StringTest_utf32Source ) );
     free ( convertedBytes );
 END_TEST
 
 DEFINE_TEST( CreateFromUTF32 )
-    using fudge::FudgeString;
+    using fudge::string;
 
     // Construct and check contents
-    FudgeString string ( StringTest_utf32Source, sizeof ( StringTest_utf32Source ), FudgeString::UTF32 );
-    TEST_EQUALS_MEMORY( string.data ( ), string.size ( ), StringTest_utf8Converted, sizeof ( StringTest_utf8Converted ) );
+    string stringOne ( StringTest_utf32Source, sizeof ( StringTest_utf32Source ), string::UTF32 );
+    TEST_EQUALS_MEMORY( stringOne.data ( ), stringOne.size ( ), StringTest_utf8Converted, sizeof ( StringTest_utf8Converted ) );
 
     // Test ASCII output
-    const std::string converted ( string.convertToStdString ( ) );
+    const std::string converted ( stringOne.convertToStdString ( ) );
     TEST_EQUALS_MEMORY( converted.c_str ( ), converted.size ( ), StringTest_asciiConverted, sizeof ( StringTest_asciiConverted ) );
 
     // Test UTF16 output
     fudge_byte * convertedBytes ( 0 );
     size_t convertedSize ( 0 );
-    string.convertToUTF16 ( convertedBytes, convertedSize );
+    stringOne.convertToUTF16 ( convertedBytes, convertedSize );
     TEST_EQUALS_MEMORY( convertedBytes, convertedSize, StringTest_utf16Source, sizeof ( StringTest_utf16Source ) );
     free ( convertedBytes );
 
     // Test UTF32 output
-    string.convertToUTF32 ( convertedBytes, convertedSize );
+    stringOne.convertToUTF32 ( convertedBytes, convertedSize );
     TEST_EQUALS_MEMORY( convertedBytes, convertedSize, StringTest_utf32Source, sizeof ( StringTest_utf32Source ) );
     free ( convertedBytes );
 END_TEST
 
 DEFINE_TEST( Comparison )
-    using fudge::FudgeString;
+    using fudge::string;
 
     // Construct the test strings
-    FudgeString utf8String ( StringTest_utf8Source, sizeof ( StringTest_utf8Source ), FudgeString::UTF8 );
-    FudgeString utf8Duplicate ( utf8String );
-    FudgeString utf16String ( StringTest_utf16Source, sizeof ( StringTest_utf16Source ), FudgeString::UTF16 );
-    FudgeString utf16Truncated ( StringTest_utf16Source, sizeof ( StringTest_utf16Source ) - 2, FudgeString::UTF16 );
-    FudgeString lowString ( "\b\n\t\t" );
+    string utf8String ( StringTest_utf8Source, sizeof ( StringTest_utf8Source ), string::UTF8 );
+    string utf8Duplicate ( utf8String );
+    string utf16String ( StringTest_utf16Source, sizeof ( StringTest_utf16Source ), string::UTF16 );
+    string utf16Truncated ( StringTest_utf16Source, sizeof ( StringTest_utf16Source ) - 2, string::UTF16 );
+    string lowString ( "\b\n\t\t" );
 
     // Construct null and reference test strings
-    FudgeString nullString, utf8Reference ( "Will be replaced by utf8String contents" );
+    string nullString, utf8Reference ( "Will be replaced by utf8String contents" );
     utf8Reference = utf8String;
 
     // Test NULL pointer comparions
@@ -189,3 +189,4 @@ DEFINE_TEST_SUITE( String )
     REGISTER_TEST( CreateFromUTF32 )
     REGISTER_TEST( Comparison )
 END_TEST_SUITE
+

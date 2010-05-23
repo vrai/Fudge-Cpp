@@ -13,112 +13,112 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 #include "fudge-cpp/string.hpp"
+#include "fudge-cpp/exception.hpp"
 #include "fudge/string.h"
 
 namespace
 {
     typedef FudgeStatus ( *FudgeStringUTFConstructor ) ( FudgeStringImpl * *, const fudge_byte *, size_t );
 
-    inline FudgeStringUTFConstructor getConstructorForType ( fudge::FudgeString::UnicodeType type )
+    inline FudgeStringUTFConstructor getConstructorForType ( fudge::string::UnicodeType type )
     {
         switch ( type )
         {
-            case fudge::FudgeString::UTF8:  return FudgeString_createFromUTF8;
-            case fudge::FudgeString::UTF16: return FudgeString_createFromUTF16;
-            case fudge::FudgeString::UTF32: return FudgeString_createFromUTF32;
-            default:                        return 0;
+            case fudge::string::UTF8:  return FudgeString_createFromUTF8;
+            case fudge::string::UTF16: return FudgeString_createFromUTF16;
+            case fudge::string::UTF32: return FudgeString_createFromUTF32;
+            default:                   return 0;
         }
     }
 }
 
 namespace fudge {
 
-FudgeString::FudgeString ( )
+string::string ( )
     : m_string ( 0 )
 {
 }
 
-FudgeString::FudgeString ( const std::string & source )
+string::string ( const std::string & source )
     : m_string ( 0 )
 {
-    FudgeException::throwOnError ( FudgeString_createFromASCII ( &m_string, source.c_str ( ), source.size ( ) ) );
+    exception::throwOnError ( FudgeString_createFromASCII ( &m_string, source.c_str ( ), source.size ( ) ) );
 }
 
-FudgeString::FudgeString ( const char * chars, size_t numchars )
+string::string ( const char * chars, size_t numchars )
     : m_string ( 0 )
 {
-    FudgeException::throwOnError ( FudgeString_createFromASCII ( &m_string, chars, numchars ) );
+    exception::throwOnError ( FudgeString_createFromASCII ( &m_string, chars, numchars ) );
 }
 
-FudgeString::FudgeString ( const char * chars )
+string::string ( const char * chars )
     : m_string ( 0 )
 {
-    FudgeException::throwOnError ( FudgeString_createFromASCIIZ ( &m_string, chars ) );
+    exception::throwOnError ( FudgeString_createFromASCIIZ ( &m_string, chars ) );
 }
 
-FudgeString::FudgeString ( const fudge_byte * bytes, size_t numbytes, UnicodeType type )
+string::string ( const fudge_byte * bytes, size_t numbytes, UnicodeType type )
     : m_string ( 0 )
 {
     FudgeStringUTFConstructor constructor ( getConstructorForType ( type ) );
     if ( constructor )
-        FudgeException::throwOnError ( constructor ( &m_string, bytes, numbytes ) );
+        exception::throwOnError ( constructor ( &m_string, bytes, numbytes ) );
     else
-        throw FudgeException ( FUDGE_STRING_UNKNOWN_UNICODE_TYPE );
+        throw exception ( FUDGE_STRING_UNKNOWN_UNICODE_TYPE );
 }
 
-FudgeString::FudgeString ( const FudgeString & source )
+string::string ( const string & source )
     : m_string ( 0 )
 {
     if ( source.m_string )
     {
-        FudgeException::throwOnError ( FudgeString_retain ( source.m_string ) );
+        exception::throwOnError ( FudgeString_retain ( source.m_string ) );
         m_string = source.m_string;
     }
 }
 
-FudgeString & FudgeString::operator= ( const FudgeString & source )
+string & string::operator= ( const string & source )
 {
     FudgeStringImpl * oldstring ( m_string );
 
     if ( source.m_string )
     {
-        FudgeException::throwOnError ( FudgeString_retain ( source.m_string ) );
+        exception::throwOnError ( FudgeString_retain ( source.m_string ) );
         m_string = source.m_string;
     }
     else
         m_string = 0;
 
     if ( oldstring )
-        FudgeException::throwOnError ( FudgeString_release ( oldstring ) );
+        exception::throwOnError ( FudgeString_release ( oldstring ) );
 }
 
-FudgeString::~FudgeString ( )
+string::~string ( )
 {
     if ( m_string )
-        FudgeException::throwOnError ( FudgeString_release ( m_string ) );
+        exception::throwOnError ( FudgeString_release ( m_string ) );
 }
 
-size_t FudgeString::size ( ) const
+size_t string::size ( ) const
 {
     return FudgeString_getSize ( m_string );
 }
 
-const fudge_byte * FudgeString::data ( ) const
+const fudge_byte * string::data ( ) const
 {
     return FudgeString_getData ( m_string );
 }
 
-void FudgeString::convertToASCIIZ ( char * & string ) const
+void string::convertToASCIIZ ( char * & string ) const
 {
     if ( m_string )
-        FudgeException::throwOnError ( FudgeString_convertToASCIIZ ( &string, m_string ) );
+        exception::throwOnError ( FudgeString_convertToASCIIZ ( &string, m_string ) );
     else
         string = 0;
 }
 
-std::string FudgeString::convertToStdString ( ) const
+std::string string::convertToStdString ( ) const
 {
     char * cstring ( 0 );
     convertToASCIIZ ( cstring );
@@ -131,10 +131,10 @@ std::string FudgeString::convertToStdString ( ) const
     return std::string ( );
 }
 
-void FudgeString::convertToUTF16 ( fudge_byte * & bytes, size_t & numbytes ) const
+void string::convertToUTF16 ( fudge_byte * & bytes, size_t & numbytes ) const
 {
     if ( m_string )
-        FudgeException::throwOnError ( FudgeString_convertToUTF16 ( &bytes, &numbytes, m_string ) );
+        exception::throwOnError ( FudgeString_convertToUTF16 ( &bytes, &numbytes, m_string ) );
     else
     {
         bytes = 0;
@@ -142,10 +142,10 @@ void FudgeString::convertToUTF16 ( fudge_byte * & bytes, size_t & numbytes ) con
     }
 }
 
-void FudgeString::convertToUTF32 ( fudge_byte * & bytes, size_t & numbytes ) const
+void string::convertToUTF32 ( fudge_byte * & bytes, size_t & numbytes ) const
 {
     if ( m_string )
-        FudgeException::throwOnError ( FudgeString_convertToUTF32 ( &bytes, &numbytes, m_string ) );
+        exception::throwOnError ( FudgeString_convertToUTF32 ( &bytes, &numbytes, m_string ) );
     else
     {
         bytes = 0;
@@ -153,30 +153,30 @@ void FudgeString::convertToUTF32 ( fudge_byte * & bytes, size_t & numbytes ) con
     }
 }
 
-const FudgeStringImpl * FudgeString::raw ( ) const
+const FudgeStringImpl * string::raw ( ) const
 {
     return m_string;
 }
 
-bool operator< ( const FudgeString & left, const FudgeString & right )
+bool operator< ( const fudge::string & left, const fudge::string & right )
 {
     return FudgeString_compare ( const_cast<FudgeStringImpl *> ( left.raw ( ) ),
                                  const_cast<FudgeStringImpl *> ( right.raw ( ) ) ) < 0;
 }
 
-bool operator> ( const FudgeString & left, const FudgeString & right )
+bool operator> ( const fudge::string & left, const fudge::string & right )
 {
     return FudgeString_compare ( const_cast<FudgeStringImpl *> ( left.raw ( ) ),
                                  const_cast<FudgeStringImpl *> ( right.raw ( ) ) ) > 0;
 }
 
-bool operator== ( const FudgeString & left, const FudgeString & right )
+bool operator== ( const fudge::string & left, const fudge::string & right )
 {
     return FudgeString_compare ( const_cast<FudgeStringImpl *> ( left.raw ( ) ),
                                  const_cast<FudgeStringImpl *> ( right.raw ( ) ) ) == 0;
 }
 
-bool operator!= ( const FudgeString & left, const FudgeString & right )
+bool operator!= ( const fudge::string & left, const fudge::string & right )
 {
     return FudgeString_compare ( const_cast<FudgeStringImpl *> ( left.raw ( ) ),
                                  const_cast<FudgeStringImpl *> ( right.raw ( ) ) ) != 0;

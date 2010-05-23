@@ -1,0 +1,5 @@
+depcomp
+install-sh
+missing
+config.*
+lt*.sh
