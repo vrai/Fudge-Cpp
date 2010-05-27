@@ -20,6 +20,7 @@ noinst_HEADERS =
 
 libfudgecpp_la_SOURCES = datetime.cpp   \
                          exception.cpp  \
+                         message.cpp    \
                          string.cpp
 
 libfudgecpp_la_LDFLAGS = -no-undefined -version-info @API_VERSION@

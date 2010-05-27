@@ -15,7 +15,8 @@
 TESTS = test_exception  \
         test_datetime   \
         test_string     \
-        test_optional
+        test_optional   \
+        test_message
 
 check_PROGRAMS = $(TESTS)
 
@@ -38,6 +39,9 @@ test_string_LDADD = $(top_builddir)/src/libfudgecpp.la
 
 test_optional_SOURCES = test_optional.cpp $(FRAMEWORK_SOURCE)
 test_optional_LDADD = $(top_builddir)/src/libfudgecpp.la
+
+test_message_SOURCES = test_message.cpp $(FRAMEWORK_SOURCE)
+test_message_LDADD = $(top_builddir)/src/libfudgecpp.la
 
 clean-local:
 	$(RM) -f *.log

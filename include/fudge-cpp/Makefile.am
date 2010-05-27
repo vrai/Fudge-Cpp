@@ -17,6 +17,7 @@ libfudgecpp_includedir = $(includedir)/fudge-cpp
 libfudgecpp_include_HEADERS = datetime.hpp      \
                               datetimebase.hpp  \
                               exception.hpp     \
+                              message.hpp       \
                               string.hpp
 
 distclean-local:
