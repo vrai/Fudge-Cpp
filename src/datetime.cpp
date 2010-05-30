@@ -37,6 +37,11 @@ date::date ( int32_t year, uint8_t month, uint8_t day )
     exception::throwOnError ( FudgeDate_initialise ( &m_datetime.date, year, month, day ) );
 }
 
+date::date ( const FudgeDate & source )
+{
+    m_datetime.date = source;
+}
+
 date::~date ( )
 {
 }
@@ -54,6 +59,11 @@ time::time ( uint32_t seconds, uint32_t nanoseconds, FudgeDateTimePrecision prec
 time::time ( uint32_t seconds, uint32_t nanoseconds, FudgeDateTimePrecision precision, int8_t timezoneOffset )
 {
     exception::throwOnError ( FudgeTime_initialiseWithTimezone ( &m_datetime.time, seconds, nanoseconds, precision, timezoneOffset ) );
+}
+
+time::time ( const FudgeTime & source )
+{
+    m_datetime.time = source;
 }
 
 time::~time ( )

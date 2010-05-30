@@ -25,6 +25,7 @@ class date : public virtual datetimebase
     public:
         date ( );
         date ( int32_t year, uint8_t month, uint8_t day );
+        date ( const FudgeDate & source );
         virtual ~date ( );
 
         inline int32_t year ( ) const  { return m_datetime.date.year; }
@@ -43,6 +44,7 @@ class time : public virtual datetimebase
                uint32_t nanoseconds,
                FudgeDateTimePrecision precision,
                int8_t timezoneOffset );
+        time ( const FudgeTime & source );
         virtual ~time ( );
 
         inline uint32_t seconds ( ) const                 { return m_datetime.time.seconds; }

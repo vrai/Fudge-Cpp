@@ -38,6 +38,7 @@ namespace fudge {
 string::string ( )
     : m_string ( 0 )
 {
+    exception::throwOnError ( FudgeString_createFromASCIIZ ( &m_string, 0 ) );
 }
 
 string::string ( const std::string & source )
@@ -75,6 +76,15 @@ string::string ( const string & source )
     {
         exception::throwOnError ( FudgeString_retain ( source.m_string ) );
         m_string = source.m_string;
+    }
+}
+
+string::string ( FudgeString source )
+    : m_string ( source )
+{
+    if ( m_string )
+    {
+        exception::throwOnError ( FudgeString_retain ( m_string ) );
     }
 }
 

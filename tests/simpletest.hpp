@@ -105,7 +105,7 @@ class Test
         const std::string & name ( ) const;
     protected:
         void equalsTrue ( const char * file, int line, const char * text, int value );
-        void equalsInt ( const char * file, int line, const char * xStr, const char * yStr, int x, int y );
+        void equalsInt ( const char * file, int line, const char * xStr, const char * yStr, int64_t  x, int64_t y );
         void equalsFloat ( const char * file, int line, const char * xStr, const char * yStr, double x, double y, double epsilon );
         void equalsMemory ( const char * file, int line, const char * xStr, const char * yStr, const void * x, int sizeX, const void * y, int sizeY );
         void throwsNothing ( const char * file, int line, const char * text, bool threw );

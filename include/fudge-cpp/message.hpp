@@ -30,6 +30,7 @@ class message
         static const optional<fudge_i16> noordinal;
 
         message ( );
+        message ( FudgeMsg source );
         message ( const message & source );
         message & operator= ( const message & source );
 
@@ -37,7 +38,7 @@ class message
 
         size_t size ( ) const;
 
-        void getField ( FudgeField & field, size_t index ) const;
+        void getFieldAt ( FudgeField & field, size_t index ) const;
         void getField ( FudgeField & field, const string & name ) const;
         void getField ( FudgeField & field, fudge_i16 ordinal ) const;
 

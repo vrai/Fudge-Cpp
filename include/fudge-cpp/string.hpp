@@ -40,6 +40,10 @@ class string
         // Unicode string constructor
         string ( const fudge_byte * bytes, size_t numbytes, UnicodeType type );
 
+        // Fudge-C raw object constructor - takes a reference to the source
+        // object, if it's non-null.
+        string ( FudgeString source );
+
         string ( const string & source );
         string & operator= ( const string & source );
 

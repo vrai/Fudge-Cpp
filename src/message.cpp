@@ -62,6 +62,12 @@ message::message ( )
     exception::throwOnError ( FudgeMsg_create ( &m_message ) );
 }
 
+message::message ( FudgeMsg source )
+    : m_message ( source )
+{
+    exception::throwOnError ( FudgeMsg_retain ( m_message ) );
+}
+
 message::message ( const message & source )
     : m_message ( source.m_message )
 {
@@ -92,7 +98,7 @@ size_t message::size ( ) const
     return FudgeMsg_numFields ( m_message );
 }
 
-void message::getField ( FudgeField & field, size_t index ) const
+void message::getFieldAt ( FudgeField & field, size_t index ) const
 {
     exception::throwOnError ( FudgeMsg_getFieldAtIndex ( &field, m_message, index ) );
 }

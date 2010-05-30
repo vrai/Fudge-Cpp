@@ -181,7 +181,7 @@ void Test::equalsTrue ( const char * file, int line, const char * text, int valu
     log ( ) << file << ":" << line << " : " << text << " = true" << std::endl;
 }
 
-void Test::equalsInt ( const char * file, int line, const char * xStr, const char * yStr, int x, int y )
+void Test::equalsInt ( const char * file, int line, const char * xStr, const char * yStr, int64_t x, int64_t y )
 {
     if ( x != y )
     {
