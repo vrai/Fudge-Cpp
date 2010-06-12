@@ -30,7 +30,7 @@
 #define TEST_EQUALS_FLOAT( x, y, epsilon ) equalsFloat ( __FILE__, __LINE__, #x, #y, x, y, epsilon )
 #define TEST_EQUALS_MEMORY( x, sx, y, sy ) equalsMemory ( __FILE__, __LINE__, #x, #y, x, sx, y, sy )
 #define TEST_EQUALS_VECTOR( x, y ) equalsVector ( __FILE__, __LINE__, #x, #y, x, y );
-// TODO Add generic (templated) equality check
+#define TEST_EQUALS( x, y ) equalsAnything ( __FILE__, __LINE__, #x, #y, x, y );
 
 #define TEST_THROWS_NOTHING( x )                            \
     try                                                     \
@@ -147,6 +147,18 @@ class Test
 
             log ( ) << file << ":" << line << " : " << xStr << " (" << x.size ( ) << " elements) == "
                     << yStr << " (" << y.size ( ) << " elements)" << std::endl;
+        }
+
+        template<class T> void equalsAnything ( const char * file, int line, const char * xStr, const char * yStr, const T & x, const T & y )
+        {
+            if ( x == y )
+                log ( ) << file << ":" << line << " : " << xStr << " (" << x << ") == " << yStr <<  " (" << y << ")" << std::endl;
+            else
+            {
+                std::ostringstream error;
+                error << xStr << " (" << x << ") != " << yStr <<  " (" << y << ")";
+                throw SimpleTestException ( error.str ( ), file, line );
+            }
         }
     private:
         std::string m_name, m_suite;

@@ -14,8 +14,10 @@
  
 libfudgecpp_includedir = $(includedir)/fudge-cpp
 
-libfudgecpp_include_HEADERS = datetime.hpp      \
+libfudgecpp_include_HEADERS = codec.hpp         \
+                              datetime.hpp      \
                               datetimebase.hpp  \
+                              envelope.hpp      \
                               exception.hpp     \
                               field.hpp         \
                               message.hpp       \

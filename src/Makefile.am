@@ -18,7 +18,9 @@ INCLUDES = -I$(top_srcdir)/include
 
 noinst_HEADERS =
 
-libfudgecpp_la_SOURCES = datetime.cpp   \
+libfudgecpp_la_SOURCES = codec.cpp      \
+                         datetime.cpp   \
+                         envelope.cpp   \
                          exception.cpp  \
                          field.cpp      \
                          message.cpp    \
