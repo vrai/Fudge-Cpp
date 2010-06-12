@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 #include "simpletest.hpp"
-#include <sstream>
-#include <stdexcept>
 #include <stdio.h>
 #ifndef FUDGE_HAVE_MATH_H
 #   include <math.h>
@@ -39,27 +37,20 @@ namespace
         strftime ( timeString, sizeof ( timeString ), "%Y-%m-%d %H:%M:%S", &utcTime );
         return timeString;
     }
-
-    class SimpleTestException : public std::runtime_error
-    {
-        public:
-            SimpleTestException ( const std::string & error, const char * file, int line ) throw ( )
-                : std::runtime_error ( error )
-                , m_file ( file )
-                , m_line ( line )
-            {
-            }
-
-            ~SimpleTestException ( ) throw ( )
-            {
-            }
-
-            std::string m_file;
-            int m_line;
-    };
 }
 
 namespace simpletest {
+
+SimpleTestException::SimpleTestException ( const std::string & error, const char * file, int line ) throw ( )
+    : std::runtime_error ( error )
+    , m_file ( file )
+    , m_line ( line )
+{
+}
+
+SimpleTestException::~SimpleTestException ( ) throw ( )
+{
+}
 
 Suite::Suite ( const std::string & name )
     : m_name ( name )

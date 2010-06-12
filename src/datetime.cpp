@@ -84,6 +84,11 @@ datetime::datetime ( int32_t year, uint8_t month, uint8_t day, uint32_t seconds,
     exception::throwOnError ( FudgeDateTime_initialiseWithTimezone ( &m_datetime, year, month, day, seconds, nanoseconds, precision, timezoneOffset ) );
 }
 
+datetime::datetime ( const FudgeDateTime & source )
+{
+    m_datetime = source;
+}
+
 }
 
 bool operator< ( const fudge::date & left, const fudge::date & right )

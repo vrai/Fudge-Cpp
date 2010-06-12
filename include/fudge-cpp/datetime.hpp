@@ -71,6 +71,7 @@ class datetime : public time, public date
                    uint32_t nanoseconds,
                    FudgeDateTimePrecision precision,
                    int8_t timezoneOffset );
+        datetime ( const FudgeDateTime & source );
 };
 
 }

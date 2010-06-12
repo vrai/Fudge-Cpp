@@ -98,22 +98,28 @@ size_t message::size ( ) const
     return FudgeMsg_numFields ( m_message );
 }
 
-void message::getFieldAt ( FudgeField & field, size_t index ) const
+field message::getFieldAt ( size_t index ) const
 {
-    exception::throwOnError ( FudgeMsg_getFieldAtIndex ( &field, m_message, index ) );
+    FudgeField raw;
+    exception::throwOnError ( FudgeMsg_getFieldAtIndex ( &raw, m_message, index ) );
+    return raw;
 }
 
-void message::getField ( FudgeField & field, const string & name ) const
+field message::getField ( const string & name ) const
 {
-    exception::throwOnError ( FudgeMsg_getFieldByName ( &field, m_message, name.raw ( ) ) );
+    FudgeField raw;
+    exception::throwOnError ( FudgeMsg_getFieldByName ( &raw, m_message, name.raw ( ) ) );
+    return raw;
 }
 
-void message::getField ( FudgeField & field, fudge_i16 ordinal ) const
+field message::getField ( fudge_i16 ordinal ) const
 {
-    exception::throwOnError ( FudgeMsg_getFieldByOrdinal ( &field, m_message, ordinal ) );
+    FudgeField raw;
+    exception::throwOnError ( FudgeMsg_getFieldByOrdinal ( &raw, m_message, ordinal ) );
+    return raw;
 }
 
-void message::getFields ( std::vector<FudgeField> & fields ) const
+void message::getFields ( std::vector<field> & fields ) const
 {
     fields.clear ( );
 

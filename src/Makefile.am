@@ -20,6 +20,7 @@ noinst_HEADERS =
 
 libfudgecpp_la_SOURCES = datetime.cpp   \
                          exception.cpp  \
+                         field.cpp      \
                          message.cpp    \
                          string.cpp
 

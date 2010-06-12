@@ -16,9 +16,7 @@
 #ifndef INC_FUDGE_CPP_MESSAGE_HPP
 #define INC_FUDGE_CPP_MESSAGE_HPP
 
-#include "fudge-cpp/datetime.hpp"
-#include "fudge-cpp/string.hpp"
-#include "fudge-cpp/optional.hpp"
+#include "fudge-cpp/field.hpp"
 #include <vector>
 
 namespace fudge {
@@ -38,11 +36,11 @@ class message
 
         size_t size ( ) const;
 
-        void getFieldAt ( FudgeField & field, size_t index ) const;
-        void getField ( FudgeField & field, const string & name ) const;
-        void getField ( FudgeField & field, fudge_i16 ordinal ) const;
+        field getFieldAt ( size_t index ) const;
+        field getField ( const string & name ) const;
+        field getField ( fudge_i16 ordinal ) const;
 
-        void getFields ( std::vector<FudgeField> & fields ) const;
+        void getFields ( std::vector<field> & fields ) const;
 
         void addField ( const optional<string> & name = noname, const optional<fudge_i16> ordinal = noordinal );
 
