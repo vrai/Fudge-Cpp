@@ -36,10 +36,10 @@ envelope::envelope ( fudge_byte directives,
                                                         payload.raw ( ) ) );
 }
 
-envelope::envelope ( FudgeMsgEnvelope source )
+envelope::envelope ( FudgeMsgEnvelope source, bool takeReference )
     : m_envelope ( source )
 {
-    if ( m_envelope )
+    if ( takeReference && m_envelope )
         exception::throwOnError ( FudgeMsgEnvelope_retain ( m_envelope ) );
 }
 

@@ -28,7 +28,7 @@ class envelope
                    fudge_byte schemaversion,
                    fudge_i16 taxonomy,
                    message payload );
-        envelope ( FudgeMsgEnvelope source );
+        envelope ( FudgeMsgEnvelope source, bool takeReference = true );
         envelope ( const envelope & source );
         envelope & operator= ( const envelope & source );
         ~envelope ( );

@@ -23,7 +23,7 @@ envelope codec::decode ( const fudge_byte * bytes, fudge_i32 numbytes ) const
 {
     FudgeMsgEnvelope target;
     exception::throwOnError ( FudgeCodec_decodeMsg ( &target, bytes, numbytes ) );
-    return target;
+    return envelope ( target, false );
 }
 
 void codec::encode ( const envelope & source, fudge_byte * & bytes, fudge_i32 & numbytes ) const
