@@ -501,6 +501,303 @@ DEFINE_TEST( EncodeAllNames )
     delete [] reference;
 END_TEST
 
+DEFINE_TEST( EncodeFixedWidths )
+    using fudge::codec;
+    using fudge::envelope;
+    using fudge::message;
+    using fudge::string;
+
+    // Create the source array
+    fudge_byte bytes [ 512 ];
+    for ( size_t index ( 0 ); index < sizeof ( bytes ); ++index )
+        bytes [ index ] = static_cast<fudge_byte> ( index );
+
+    // Construct the message
+    message message1;
+    message1.addField4ByteArray ( bytes, string ( "byte[4]" ) );
+    message1.addField8ByteArray ( bytes, string ( "byte[8]" ) );
+    message1.addField16ByteArray ( bytes, string ( "byte[16]" ) );
+    message1.addField20ByteArray ( bytes, string ( "byte[20]" ) );
+    message1.addField32ByteArray ( bytes, string ( "byte[32]" ) );
+    message1.addField64ByteArray ( bytes, string ( "byte[64]" ) );
+    message1.addField128ByteArray ( bytes, string ( "byte[128]" ) );
+    message1.addField256ByteArray ( bytes, string ( "byte[256]" ) );
+    message1.addField512ByteArray ( bytes, string ( "byte[512]" ) );
+
+    message1.addField ( FUDGE_TYPE_BYTE_ARRAY, bytes, 28, string ( "byte[28]" ) );
+
+    // Wrap the message in an envelope and encode it
+    fudge_byte * encoded, * reference;
+    fudge_i32 encodedsize, referencesize;
+    envelope envelope1 ( 0, 0, 0, message1 );
+    codec codec1;
+    TEST_THROWS_NOTHING( codec1.encode ( envelope1, encoded, encodedsize ) );
+
+    // Load the reference the file and compare it with the encoded message
+    loadFile ( FixedWidth_Filename, reference, referencesize );
+    TEST_EQUALS_MEMORY( encoded, encodedsize, reference, referencesize );
+
+    free ( encoded );
+    delete [] reference;
+END_TEST
+
+DEFINE_TEST( EncodeAllOrdinals )
+    using fudge::codec;
+    using fudge::envelope;
+    using fudge::message;
+    using fudge::string;
+
+    // Construct the message
+    message message1;
+    message1.addField ( true, message::noname, 1 );
+    message1.addField ( false , message::noname, 2 );
+    message1.addField ( 5, message::noname, 3 );
+    message1.addField ( 5, message::noname, 4 );
+    message1.addField ( 127 + 5, message::noname, 5 );
+    message1.addField ( 127 + 5, message::noname, 6 );
+    message1.addField ( 32767 + 5, message::noname, 7 );
+    message1.addField ( 32767 + 5, message::noname, 8 );
+    message1.addField ( 2147483647ll + 5, message::noname, 9 );
+    message1.addField ( 2147483647ll + 5, message::noname, 10 );
+    message1.addField ( 0.5f, message::noname, 11 );
+    message1.addField ( 0.5f, message::noname, 12 );
+    message1.addField ( 0.27362, message::noname, 13 );
+    message1.addField ( 0.27362, message::noname, 14 );
+
+    message1.addField ( string ( "Kirk Wylie" ), message::noname, 15 );
+
+    message1.addField ( std::vector<fudge_f32> ( 24, 0.0f ), message::noname, 16 );
+    message1.addField ( std::vector<fudge_f64> ( 273, 0.0f ), message::noname, 17 );
+
+    // Wrap the message in an envelope and encode it
+    fudge_byte * encoded, * reference;
+    fudge_i32 encodedsize, referencesize;
+    envelope envelope1 ( 0, 0, 0, message1 );
+    codec codec1;
+    TEST_THROWS_NOTHING( codec1.encode ( envelope1, encoded, encodedsize ) );
+
+    // Load the reference the file and compare it with the encoded message
+    loadFile ( AllOrdinals_Filename, reference, referencesize );
+    TEST_EQUALS_MEMORY( encoded, encodedsize, reference, referencesize );
+
+    free ( encoded );
+    delete [] reference;
+END_TEST
+
+DEFINE_TEST( EncodeUnknown )
+    using fudge::codec;
+    using fudge::envelope;
+    using fudge::message;
+    using fudge::string;
+
+    // Create the source array
+    fudge_byte empty [ 10 ];
+    memset ( empty, 0, sizeof ( empty ) );
+
+    // Construct the message
+    message message1;
+    message1.addField ( static_cast<fudge_type_id> ( 200 ), empty, 10, string ( "unknown" ) );
+
+    // Wrap the message in an envelope and encode it
+    fudge_byte * encoded, * reference;
+    fudge_i32 encodedsize, referencesize;
+    envelope envelope1 ( 0, 0, 0, message1 );
+    codec codec1;
+    TEST_THROWS_NOTHING( codec1.encode ( envelope1, encoded, encodedsize ) );
+
+    // Load the reference the file and compare it with the encoded message
+    loadFile ( Unknown_Filename, reference, referencesize );
+    TEST_EQUALS_MEMORY( encoded, encodedsize, reference, referencesize );
+
+    free ( encoded );
+    delete [] reference;
+END_TEST
+
+DEFINE_TEST( EncodeSubMsgs )
+    using fudge::codec;
+    using fudge::envelope;
+    using fudge::message;
+    using fudge::string;
+
+    // Create the top level message and add the first submessage
+    message message1;
+    message submessage;
+    submessage.addField ( string ( "fibble" ), string ( "bibble" ) );
+    submessage.addField ( string ( "Blibble" ), message::noname, 827 );
+    message1.addField ( submessage, string ( "sub1" ) );
+
+    // Create and add the second submessage
+    submessage = message ( );
+    submessage.addField ( 9837438, string ( "bibble9" ) );
+    submessage.addField ( 82.77f, message::noname, 828 );
+    message1.addField ( submessage, string ( "sub2" ) );
+
+    // Wrap the message in an envelope and encode it
+    fudge_byte * encoded, * reference;
+    fudge_i32 encodedsize, referencesize;
+    envelope envelope1 ( 0, 0, 0, message1 );
+    codec codec1;
+    TEST_THROWS_NOTHING( codec1.encode ( envelope1, encoded, encodedsize ) );
+
+    // Load the reference the file and compare it with the encoded message
+    loadFile ( SubMsg_Filename, reference, referencesize );
+    TEST_EQUALS_MEMORY( encoded, encodedsize, reference, referencesize );
+
+    free ( encoded );
+    delete [] reference;
+END_TEST
+
+DEFINE_TEST( EncodeVariableWidths )
+    using fudge::codec;
+    using fudge::envelope;
+    using fudge::message;
+    using fudge::string;
+
+    // Construct the message
+    message message1;
+    message1.addField ( std::vector<fudge_byte> ( 100, 0 ), string ( "100" ) );
+    message1.addField ( std::vector<fudge_byte> ( 1000, 0 ), string ( "1000" ) );
+    message1.addField ( std::vector<fudge_byte> ( 100000, 0 ), string ( "10000" ) );
+
+    // Wrap the message in an envelope and encode it
+    fudge_byte * encoded, * reference;
+    fudge_i32 encodedsize, referencesize;
+    envelope envelope1 ( 0, 0, 0, message1 );
+    codec codec1;
+    TEST_THROWS_NOTHING( codec1.encode ( envelope1, encoded, encodedsize ) );
+
+    // Load the reference the file and compare it with the encoded message
+    loadFile ( VariableWidth_Filename, reference, referencesize );
+    TEST_EQUALS_MEMORY( encoded, encodedsize, reference, referencesize );
+
+    free ( encoded );
+    delete [] reference;
+END_TEST
+
+DEFINE_TEST( EncodeDateTimes )
+    using fudge::codec;
+    using fudge::date;
+    using fudge::datetime;
+    using fudge::envelope;
+    using fudge::message;
+    using fudge::string;
+    using fudge::time;
+
+    // Construct the message
+    message message1;
+    message1.addField ( date ( 2010, 0, 0 ), string ( "date-Year" ) );
+    message1.addField ( date ( 2010, 3, 0 ), string ( "date-Month" ) );
+    message1.addField ( date ( 2010, 3, 4 ), string ( "date-Day" ) );
+
+    message1.addField ( time ( 11 * 3600 + 12 * 60 + 13, 987654321, FUDGE_DATETIME_PRECISION_HOUR, 0 ), string ( "time-Hour-UTC" ) );
+    message1.addField ( time ( 11 * 3600 + 12 * 60 + 13, 987654321, FUDGE_DATETIME_PRECISION_MINUTE, 0 ), string ( "time-Minute-UTC" ) );
+    message1.addField ( time ( 11 * 3600 + 12 * 60 + 13, 987654321, FUDGE_DATETIME_PRECISION_SECOND, 0 ), string ( "time-Second-UTC" ) );
+    message1.addField ( time ( 11 * 3600 + 12 * 60 + 13, 987654321, FUDGE_DATETIME_PRECISION_MILLISECOND, 0 ), string ( "time-Milli-UTC" ) );
+    message1.addField ( time ( 11 * 3600 + 12 * 60 + 13, 987654321, FUDGE_DATETIME_PRECISION_MICROSECOND, 0 ), string ( "time-Micro-UTC" ) );
+    message1.addField ( time ( 11 * 3600 + 12 * 60 + 13, 987654321, FUDGE_DATETIME_PRECISION_NANOSECOND, 0 ), string ( "time-Nano-UTC" ) );
+    message1.addField ( time ( 11 * 3600 + 12 * 60 + 13, 987654321, FUDGE_DATETIME_PRECISION_NANOSECOND ), string ( "time-Nano" ) );
+    message1.addField ( time ( 11 * 3600 + 12 * 60 + 13, 987654321, FUDGE_DATETIME_PRECISION_NANOSECOND, 4 ), string ( "time-Nano-+1h" ) );
+
+    message1.addField ( datetime ( 1000, 0, 0, 0, 0, FUDGE_DATETIME_PRECISION_MILLENNIUM ), string ( "datetime-Millenia" ) );
+    message1.addField ( datetime ( 1900, 0, 0, 0, 0, FUDGE_DATETIME_PRECISION_CENTURY ), string ( "datetime-Century" ) );
+    message1.addField ( datetime ( 2010, 3, 4, 11 * 3600 + 12 * 60 + 13, 987654321, FUDGE_DATETIME_PRECISION_NANOSECOND, 0 ), string ( "datetime-Nano-UTC" ) );
+    message1.addField ( datetime ( 2010, 3, 4, 11 * 3600 + 12 * 60 + 13, 987654321, FUDGE_DATETIME_PRECISION_NANOSECOND ), string ( "datetime-Nano" ) );
+    message1.addField ( datetime ( 2010, 3, 4, 11 * 3600 + 12 * 60 + 13, 987654321, FUDGE_DATETIME_PRECISION_NANOSECOND, 4 ), string ( "datetime-Nano-+1h" ) );
+
+    // Wrap the message in an envelope and encode it
+    fudge_byte * encoded, * reference;
+    fudge_i32 encodedsize, referencesize;
+    envelope envelope1 ( 0, 0, 0, message1 );
+    codec codec1;
+    TEST_THROWS_NOTHING( codec1.encode ( envelope1, encoded, encodedsize ) );
+
+    // Load the reference the file and compare it with the encoded message
+    loadFile ( DateTimes_Filename, reference, referencesize );
+    TEST_EQUALS_MEMORY( encoded, encodedsize, reference, referencesize );
+
+    free ( encoded );
+    delete [] reference;
+END_TEST
+
+DEFINE_TEST( EncodeDeepTree )
+    using fudge::codec;
+    using fudge::envelope;
+    using fudge::message;
+    using fudge::string;
+
+    // Create the source arrays
+    fudge_byte bytes [ 512 ], empty [ 512 ];
+    std::vector<fudge_f64> doubles ( 15, 0.0 );
+    std::vector<fudge_i16> shorts ( 15, 0 );
+
+    memset ( empty, 0, sizeof ( empty ) );
+    for ( size_t index ( 0 ); index < sizeof ( bytes ); ++index )   bytes [ index ] = static_cast<fudge_byte> ( index );
+    for ( size_t index ( 0 ); index < doubles.size ( ); ++index )   doubles [ index ] = static_cast<fudge_f64> ( index ) / 10.0;
+    for ( size_t index ( 0 ); index < shorts.size ( ); ++index )    shorts [ index ] = static_cast<fudge_i16> ( index );
+
+    // Construct the message
+    message message1;
+    message1.addField ( string ( "Indicator" ), message::noordinal );
+    message1.addField ( true, string ( "Boolean" ) );
+    message1.addField ( -128, string ( "Byte" ) );
+    message1.addField ( -32768, string ( "Short" ) );
+    message1.addField ( 2147483647, string ( "Int" ) );
+    message1.addField ( 9223372036854775807ll, string ( "Long" ) );
+    message1.addField ( 1.23456f, string ( "Float" ) );
+    message1.addField ( 1.2345678, string ( "Double" ) );
+
+    message submessage;
+    submessage.addField4ByteArray ( bytes, message::noname, 4 );
+    submessage.addField8ByteArray ( bytes, message::noname, 8 );
+    submessage.addField16ByteArray ( bytes, message::noname, 16 );
+    submessage.addField20ByteArray ( bytes, message::noname, 20 );
+    submessage.addField32ByteArray ( bytes, message::noname, 32 );
+    submessage.addField64ByteArray ( bytes, message::noname, 64 );
+    submessage.addField128ByteArray ( bytes, message::noname, 128 );
+    submessage.addField256ByteArray ( bytes, message::noname, 256 );
+    submessage.addField512ByteArray ( bytes, message::noname, 512 );
+    message1.addField ( submessage, string ( "ByteArrays" ) );
+
+    message1.addField ( string ( "" ), string ( "Empty String" ) );
+    message1.addField ( string ( "This is a string." ), string ( "String" ) );
+
+    submessage = message ( );
+    submessage.addField ( FUDGE_TYPE_BYTE_ARRAY, bytes, 0, string ( "Byte[0]" ) );
+    submessage.addField ( FUDGE_TYPE_BYTE_ARRAY, bytes, 15, string ( "Byte[15]" ) );
+
+    message subsubmessage;
+    subsubmessage.addField ( std::vector<fudge_f32> ( 0, 0.0f ), string ( "Float[0]" ) );
+    subsubmessage.addField ( std::vector<fudge_f32> ( 15, 0.0f ), string ( "Float[15]" ) );
+    subsubmessage.addField ( std::vector<fudge_f64> ( 0, 0.0 ), string ( "Double[0]" ) );
+    subsubmessage.addField ( doubles, string ( "Double[15]" ) );
+    submessage.addField ( subsubmessage, string ( "FP Arrays" ) );
+
+    submessage.addField ( std::vector<fudge_i16> ( 0, 0 ), string ( "Short[0]" ) );
+    submessage.addField ( shorts, string ( "Short[15]" ) );
+    submessage.addField ( std::vector<fudge_i32> ( 0, 0 ), string ( "Int[0]" ) );
+    submessage.addField ( std::vector<fudge_i32> ( 15, 0 ), string ( "Int[15]" ) );
+    submessage.addField ( std::vector<fudge_i64> ( 0, 0 ), string ( "Long[0]" ) );
+    submessage.addField ( std::vector<fudge_i64> ( 15, 0 ), string ( "Long[15]" ) );
+    message1.addField ( submessage, string ( "Arrays" ) );
+
+    submessage = message ( );
+    message1.addField ( submessage, string ( "Null Message" ) );
+
+    // Wrap the message in an envelope and encode it
+    fudge_byte * encoded, * reference;
+    fudge_i32 encodedsize, referencesize;
+    envelope envelope1 ( 0, 0, 0, message1 );
+    codec codec1;
+    TEST_THROWS_NOTHING( codec1.encode ( envelope1, encoded, encodedsize ) );
+
+    // Load the reference the file and compare it with the encoded message
+    loadFile ( Deeper_Filename, reference, referencesize );
+    TEST_EQUALS_MEMORY( encoded, encodedsize, reference, referencesize );
+
+    free ( encoded );
+    delete [] reference;
+END_TEST
+
 DEFINE_TEST_SUITE( Codec )
     // Interop decode test files
     REGISTER_TEST( DecodeAllNames )
@@ -516,15 +813,15 @@ DEFINE_TEST_SUITE( Codec )
 
     // Interop encode tests
     REGISTER_TEST( EncodeAllNames )
-    // TODO REGISTER_TEST( EncodeFixedWidths )
-    // TODO REGISTER_TEST( EncodeAllOrdinals )
-    // TODO REGISTER_TEST( EncodeUnknown )
-    // TODO REGISTER_TEST( EncodeSubMsgs )
-    // TODO REGISTER_TEST( EncodeVariableWidths )
-    // TODO REGISTER_TEST( EncodeDateTimes )
+    REGISTER_TEST( EncodeFixedWidths )
+    REGISTER_TEST( EncodeAllOrdinals )
+    REGISTER_TEST( EncodeUnknown )
+    REGISTER_TEST( EncodeSubMsgs )
+    REGISTER_TEST( EncodeVariableWidths )
+    REGISTER_TEST( EncodeDateTimes )
 
     // Other encode tests
-    // TODO REGISTER_TEST( EncodeDeepTree );
+    REGISTER_TEST( EncodeDeepTree );
 END_TEST_SUITE
 
 namespace
