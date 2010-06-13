@@ -30,6 +30,7 @@ namespace
                              DateTimes_Filename     ( "test_data/dateTimes.dat" ),
                              Deeper_Filename        ( "test_data/deeper_fudge_msg.dat" );
 
+    void loadFile ( const std::string & filename, fudge_byte * & bytes, fudge_i32 & numbytes );
     fudge::message loadFudgeMessage ( const std::string & filename );
 
     // Possibly move this in to string.hpp? Too slow for non-test use?
@@ -450,6 +451,56 @@ DEFINE_TEST( DecodeDeepTree )
     TEST_EQUALS_INT( nullmessage.size ( ), 0 );
 END_TEST
 
+DEFINE_TEST( EncodeAllNames )
+    using fudge::codec;
+    using fudge::envelope;
+    using fudge::message;
+    using fudge::string;
+
+    // Construct the message
+    message message1;
+    message1.addField ( true, string ( "boolean" ) );
+    message1.addField ( false, string ( "Boolean" ) );
+    message1.addField ( 5, string ( "byte" ) );
+    message1.addField ( 5, string ( "Byte" ) );
+    message1.addField ( 127 + 5, string ( "short" ) );
+    message1.addField ( 127 + 5, string ( "Short" ) );
+    message1.addField ( 32767 + 5, string ( "int" ) );
+    message1.addField ( 32767 + 5, string ( "Integer" ) );
+    message1.addField ( 2147483647ll + 5, string ( "long" ) );
+    message1.addField ( 2147483647ll + 5, string ( "Long" ) );
+    message1.addField ( 0.5f, string ( "float" ) );
+    message1.addField ( 0.5f, string ( "Float" ) );
+    message1.addField ( 0.27362, string ( "double" ) );
+    message1.addField ( 0.27362, string ( "Double" ) );
+
+    message1.addField ( string ( "Kirk Wylie" ), string ( "String" ) );
+
+    message1.addField ( std::vector<fudge_f32> ( 24, 0.0f ), string ( "float array" ) );
+    message1.addField ( std::vector<fudge_f64> ( 273, 0.0 ), string ( "double array" ) );
+    message1.addField ( std::vector<fudge_i16> ( 32, 0 ), string ( "short array" ) );
+    message1.addField ( std::vector<fudge_i32> ( 83, 0 ), string ( "int array" ) );
+    message1.addField ( std::vector<fudge_i64> ( 837, 0 ), string ( "long array" ) );
+
+    message1.addField ( string ( "indicator" ), message::noordinal );
+
+    // Wrap the message in an envelope
+    envelope envelope1 ( 0, 0, 0, message1 );
+
+    // Encode the message
+    fudge_byte * encoded, * reference;
+    fudge_i32 encodedsize, referencesize;
+    codec codec1;
+    TEST_THROWS_NOTHING( codec1.encode ( envelope1, encoded, encodedsize ) );
+
+    // Load the reference the file and compare it with the encoded message
+    loadFile ( AllNames_Filename, reference, referencesize );
+    TEST_EQUALS_MEMORY( encoded, encodedsize, reference, referencesize );
+
+    delete [] encoded;
+    delete [] reference;
+END_TEST
+
 DEFINE_TEST_SUITE( Codec )
     // Interop decode test files
     REGISTER_TEST( DecodeAllNames )
@@ -464,7 +515,7 @@ DEFINE_TEST_SUITE( Codec )
     REGISTER_TEST( DecodeDeepTree )
 
     // Interop encode tests
-    // TODO REGISTER_TEST( EncodeAllNames )
+    REGISTER_TEST( EncodeAllNames )
     // TODO REGISTER_TEST( EncodeFixedWidths )
     // TODO REGISTER_TEST( EncodeAllOrdinals )
     // TODO REGISTER_TEST( EncodeUnknown )
