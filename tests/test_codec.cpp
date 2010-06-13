@@ -497,7 +497,7 @@ DEFINE_TEST( EncodeAllNames )
     loadFile ( AllNames_Filename, reference, referencesize );
     TEST_EQUALS_MEMORY( encoded, encodedsize, reference, referencesize );
 
-    delete [] encoded;
+    free ( encoded );
     delete [] reference;
 END_TEST
 
