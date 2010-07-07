@@ -23,6 +23,7 @@ libfudgecpp_la_SOURCES = codec.cpp      \
                          envelope.cpp   \
                          exception.cpp  \
                          field.cpp      \
+                         fudge.cpp      \
                          message.cpp    \
                          string.cpp
 

@@ -71,10 +71,10 @@ class string
         FudgeString m_string;
 };
 
-bool operator< ( const fudge::string & left, const fudge::string & right );
-bool operator> ( const fudge::string & left, const fudge::string & right );
-bool operator== ( const fudge::string & left, const fudge::string & right );
-bool operator!= ( const fudge::string & left, const fudge::string & right );
+bool operator< ( const string & left, const string & right );
+bool operator> ( const string & left, const string & right );
+bool operator== ( const string & left, const string & right );
+bool operator!= ( const string & left, const string & right );
 
 }
 

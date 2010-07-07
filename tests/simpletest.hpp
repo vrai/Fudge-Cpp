@@ -16,7 +16,7 @@
 #ifndef INC_FUDGE_CPP_SIMPLETEST_HPP
 #define INC_FUDGE_CPP_SIMPLETEST_HPP
 
-#include "fudge/fudge.h"
+#include "fudge-cpp/fudge.hpp"
 #include <iostream>
 #include <list>
 #include <vector>
@@ -76,7 +76,6 @@
         return suite.run ( );                               \
     }
 
-// TODO Initialise Fudge library with a proper C++ state object
 #define DEFINE_TEST( name )                                 \
     struct SimpleTest_Test_##name : public simpletest::Test \
     {                                                       \
@@ -87,7 +86,7 @@
                                                             \
         int test ( )                                        \
         {                                                   \
-            TEST_EQUALS_INT( Fudge_init ( ), FUDGE_OK );
+            fudge::fudge::init ( );
 
 #define END_TEST                                            \
             return 0;                                       \

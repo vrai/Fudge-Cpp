@@ -170,25 +170,25 @@ const FudgeString string::raw ( ) const
     return m_string;
 }
 
-bool operator< ( const fudge::string & left, const fudge::string & right )
+bool operator< ( const string & left, const string & right )
 {
     return FudgeString_compare ( const_cast<FudgeString> ( left.raw ( ) ),
                                  const_cast<FudgeString> ( right.raw ( ) ) ) < 0;
 }
 
-bool operator> ( const fudge::string & left, const fudge::string & right )
+bool operator> ( const string & left, const string & right )
 {
     return FudgeString_compare ( const_cast<FudgeString> ( left.raw ( ) ),
                                  const_cast<FudgeString> ( right.raw ( ) ) ) > 0;
 }
 
-bool operator== ( const fudge::string & left, const fudge::string & right )
+bool operator== ( const string & left, const string & right )
 {
     return FudgeString_compare ( const_cast<FudgeString> ( left.raw ( ) ),
                                  const_cast<FudgeString> ( right.raw ( ) ) ) == 0;
 }
 
-bool operator!= ( const fudge::string & left, const fudge::string & right )
+bool operator!= ( const string & left, const string & right )
 {
     return FudgeString_compare ( const_cast<FudgeString> ( left.raw ( ) ),
                                  const_cast<FudgeString> ( right.raw ( ) ) ) != 0;

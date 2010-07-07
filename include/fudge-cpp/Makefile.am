@@ -20,6 +20,7 @@ libfudgecpp_include_HEADERS = codec.hpp         \
                               envelope.hpp      \
                               exception.hpp     \
                               field.hpp         \
+                              fudge.hpp         \
                               message.hpp       \
                               string.hpp
 
