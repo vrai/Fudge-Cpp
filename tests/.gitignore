@@ -5,3 +5,4 @@ test_exception
 test_message
 test_optional
 test_string
+test_user_types
