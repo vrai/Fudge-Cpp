@@ -95,6 +95,11 @@ namespace
             fudge_f32 bid, ask;
             fudge_i32 time;
 
+            fudge::string getRic ( ) const
+            {
+                return fudge::string ( ric );
+            }
+
             static void addField ( fudge::message & message,
                                    const fudge::string & name,
                                    const ExampleTick & tick )
@@ -280,7 +285,7 @@ DEFINE_TEST( UserTypeHandling )
     TEST_EQUALS_INT( field1.type ( ), FUDGE_TYPE_EXAMPLETICK );
     TEST_EQUALS_INT( field1.numbytes ( ), sizeof ( ExampleTick ) );
     const ExampleTick * fieldtick = reinterpret_cast<const ExampleTick *> ( field1.bytes ( ) );
-    TEST_EQUALS_MEMORY( fieldtick->ric, 16, tick.ric, 16 );
+    TEST_EQUALS_TRUE( fieldtick->getRic ( ) == tick.getRic ( ) );
     TEST_EQUALS_FLOAT( fieldtick->bid, tick.bid, 0.0001 );
     TEST_EQUALS_FLOAT( fieldtick->ask, tick.ask, 0.0001 );
     TEST_EQUALS_INT( fieldtick->time, tick.time );
