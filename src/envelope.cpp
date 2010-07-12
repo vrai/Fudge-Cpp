@@ -23,6 +23,7 @@ envelope::envelope ( )
     : m_envelope ( 0 )
 {
 }
+
 envelope::envelope ( fudge_byte directives,
                      fudge_byte schemaversion,
                      fudge_i16 taxonomy,
@@ -61,6 +62,8 @@ envelope & envelope::operator= ( const envelope & source )
             exception::throwOnError ( FudgeMsgEnvelope_retain ( source.m_envelope ) );
             m_envelope = source.m_envelope;
         }
+        else
+            m_envelope = 0;
 
         if ( oldEnvelope )
             exception::throwOnError ( FudgeMsgEnvelope_release ( oldEnvelope ) );
