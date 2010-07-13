@@ -65,7 +65,9 @@ class field
         fudge_i64 getAsInt64 ( ) const;
         fudge_f32 getAsFloat32 ( ) const;
         fudge_f64 getAsFloat64 ( ) const;
-        
+
+        string getAsString ( ) const;
+
         inline const fudge_byte * bytes ( ) const { return m_field.data.bytes; }
 
         inline const FudgeField & raw ( ) const { return m_field; }

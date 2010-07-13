@@ -269,17 +269,22 @@ DEFINE_TEST( UserTypeHandling )
     TEST_EQUALS_INT( field1.type ( ), FUDGE_TYPE_EXAMPLEIP4 );
     TEST_EQUALS_MEMORY( field1.bytes ( ), field1.numbytes ( ), reinterpret_cast<const fudge_byte *> ( &localhost ), sizeof ( ExampleIp4 ) );
 
-    // TODO Add arbitary type coercion - check cast to FUDGE_TYPE_EXAMPLEIP4 (FUDGE_COERCION_NOT_REQUIRED)
-    // TODO Add arbitary type coercion - check cast to FUDGE_TYPE_FUDGE_MSG (FUDGE_INVALID_TYPE_COERCION)
-    // TODO Add arbitary type coercion - check cast to FUDGE_TYPE_STRING (FUDGE_OK)
-    // TODO Check string produced by coerction (should be "127.000.000.001")
+    FudgeFieldData fielddata;
+    FudgeTypePayload payload;
+    fudge_i32 numbytes;
+    TEST_EQUALS_INT( FudgeMsg_getFieldAs ( &( field1.raw ( ) ), FUDGE_TYPE_EXAMPLEIP4, &fielddata, &payload, &numbytes ), FUDGE_COERCION_NOT_REQUIRED );
+    TEST_EQUALS_INT( FudgeMsg_getFieldAs ( &( field1.raw ( ) ), FUDGE_TYPE_FUDGE_MSG,  &fielddata, &payload, &numbytes ), FUDGE_INVALID_TYPE_COERCION );
+    TEST_THROWS_EXCEPTION( field1.getAsInt16 ( ), std::runtime_error );
+    
+    string string1 = field1.getAsString ( );
+    TEST_EQUALS_TRUE( string1 == string ( "127.000.000.001" ) );
     
     field1 = message1.getField ( string ( "opendns" ) );
     TEST_EQUALS_INT( field1.type ( ), FUDGE_TYPE_EXAMPLEIP4 );
     TEST_EQUALS_MEMORY( field1.bytes ( ), field1.numbytes ( ), reinterpret_cast<const fudge_byte *> ( &opendns ), sizeof ( ExampleIp4 ) );
 
-    // TODO Add arbitary type coercion - check cast to FUDGE_TYPE_STRING (FUDGE_OK)
-    // TODO Check string produced by coerction (should be "208.067.222.222")
+    string1 = field1.getAsString ( );
+    TEST_EQUALS_TRUE( string1 == string ( "208.067.222.222" ) );
 
     field1 = message1.getField ( string ( "tick" ) );
     TEST_EQUALS_INT( field1.type ( ), FUDGE_TYPE_EXAMPLETICK );
@@ -290,8 +295,8 @@ DEFINE_TEST( UserTypeHandling )
     TEST_EQUALS_FLOAT( fieldtick->ask, tick.ask, 0.0001 );
     TEST_EQUALS_INT( fieldtick->time, tick.time );
 
-    // TODO Add arbitary type coercion - check cast to FUDGE_TYPE_STRING (FUDGE_OK)
-    // TODO Check string produced by coerction (should be "            GBP= 1.605000 1.607000       1263138018" - 51 bytes)
+    string1 = field1.getAsString ( );
+    TEST_EQUALS_TRUE( string1 == string ( "            GBP= 1.605000 1.607000       1263138018" ) );
 END_TEST
 
 DEFINE_TEST_SUITE( UserTypes )

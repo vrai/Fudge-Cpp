@@ -182,6 +182,19 @@ fudge_f64 field::getAsFloat64 ( ) const
     return getAsImpl<fudge_f64> ( &m_field, &FudgeMsg_getFieldAsF64 );
 }
 
+string field::getAsString ( ) const
+{
+    FudgeFieldData data;
+    FudgeTypePayload payload;
+    fudge_i32 numbytes;
+    const FudgeStatus status ( FudgeMsg_getFieldAs ( &m_field, FUDGE_TYPE_STRING, &data, &payload, &numbytes ) );
+    if ( status == FUDGE_COERCION_NOT_REQUIRED )
+        return getString ( );
+
+    exception::throwOnError ( status );
+    return string ( data.string );
+}
+
 size_t field::getArray ( std::vector<fudge_byte> & target ) const
 {
     return getArrayImpl<fudge_byte> ( FUDGE_TYPE_BYTE_ARRAY, m_field, target );
