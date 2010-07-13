@@ -16,6 +16,7 @@
 #include "fudge-cpp/field.hpp"
 #include "fudge-cpp/exception.hpp"
 #include "fudge/message_ex.h"
+#include "fudge/string.h"
 
 namespace
 {
@@ -187,12 +188,15 @@ string field::getAsString ( ) const
     FudgeFieldData data;
     FudgeTypePayload payload;
     fudge_i32 numbytes;
+
     const FudgeStatus status ( FudgeMsg_getFieldAs ( &m_field, FUDGE_TYPE_STRING, &data, &payload, &numbytes ) );
     if ( status == FUDGE_COERCION_NOT_REQUIRED )
         return getString ( );
-
     exception::throwOnError ( status );
-    return string ( data.string );
+
+    const string copy ( data.string );
+    FudgeString_release ( data.string );
+    return copy;
 }
 
 size_t field::getArray ( std::vector<fudge_byte> & target ) const

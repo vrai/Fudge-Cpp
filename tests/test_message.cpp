@@ -324,11 +324,12 @@ DEFINE_TEST( FieldCoercion )
     message1.addField ( static_cast<fudge_f32> ( -1.234f ), string ( "Non-zero Float" ) );
     message1.addField ( static_cast<fudge_f64> ( 0.0 ), string ( "Zero Double" ) );
     message1.addField ( static_cast<fudge_f64> ( 123.4567 ), string ( "Non-zero Double" ) );
+    message1.addField ( string ( "This is a string" ), string ( "String" ) );
 
     // Retrieve test fields and test casting
     std::vector<field> fields;
     message1.getFields ( fields );
-    TEST_EQUALS_INT( fields.size ( ), 12 );
+    TEST_EQUALS_INT( fields.size ( ), 13 );
 
     bool boolean;
     TEST_THROWS_EXCEPTION( boolean = fields [ 0 ].getAsBoolean ( ), exception );                                    // Indicator
@@ -399,6 +400,9 @@ DEFINE_TEST( FieldCoercion )
     TEST_THROWS_NOTHING( doubleval = fields [ 9 ].getAsFloat64 ( ) );   TEST_EQUALS_FLOAT( doubleval, -1.234, 0.001 );      // Non-zero float
     TEST_THROWS_NOTHING( doubleval = fields [ 10 ].getAsFloat64 ( ) );  TEST_EQUALS_FLOAT( doubleval, 0.0, 0.0001 );        // Zero double
     TEST_THROWS_NOTHING( doubleval = fields [ 11 ].getAsFloat64 ( ) );  TEST_EQUALS_FLOAT( doubleval, 123.4567, 0.0001 );   // Non-zero double
+
+    string stringval;
+    TEST_THROWS_NOTHING( stringval = fields [ 12 ].getAsString ( ) );   TEST_EQUALS_TRUE( stringval == string ( "This is a string" ) );
 END_TEST
 
 DEFINE_TEST_SUITE( Message )
