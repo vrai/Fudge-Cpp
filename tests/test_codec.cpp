@@ -467,8 +467,8 @@ DEFINE_TEST( EncodeAllNames )
     message1.addField ( 127 + 5, string ( "Short" ) );
     message1.addField ( 32767 + 5, string ( "int" ) );
     message1.addField ( 32767 + 5, string ( "Integer" ) );
-    message1.addField ( 2147483647ll + 5, string ( "long" ) );
-    message1.addField ( 2147483647ll + 5, string ( "Long" ) );
+    message1.addField ( static_cast<fudge_i64> ( 2147483647ll + 5 ), string ( "long" ) );
+    message1.addField ( static_cast<fudge_i64> ( 2147483647ll + 5 ), string ( "Long" ) );
     message1.addField ( 0.5f, string ( "float" ) );
     message1.addField ( 0.5f, string ( "Float" ) );
     message1.addField ( 0.27362, string ( "double" ) );
@@ -557,8 +557,8 @@ DEFINE_TEST( EncodeAllOrdinals )
     message1.addField ( 127 + 5, message::noname, 6 );
     message1.addField ( 32767 + 5, message::noname, 7 );
     message1.addField ( 32767 + 5, message::noname, 8 );
-    message1.addField ( 2147483647ll + 5, message::noname, 9 );
-    message1.addField ( 2147483647ll + 5, message::noname, 10 );
+    message1.addField ( static_cast<fudge_i64> ( 2147483647ll + 5 ), message::noname, 9 );
+    message1.addField ( static_cast<fudge_i64> ( 2147483647ll + 5 ), message::noname, 10 );
     message1.addField ( 0.5f, message::noname, 11 );
     message1.addField ( 0.5f, message::noname, 12 );
     message1.addField ( 0.27362, message::noname, 13 );
@@ -742,7 +742,7 @@ DEFINE_TEST( EncodeDeepTree )
     message1.addField ( -128, string ( "Byte" ) );
     message1.addField ( -32768, string ( "Short" ) );
     message1.addField ( 2147483647, string ( "Int" ) );
-    message1.addField ( 9223372036854775807ll, string ( "Long" ) );
+    message1.addField ( static_cast<fudge_i64> ( 9223372036854775807ll ), string ( "Long" ) );
     message1.addField ( 1.23456f, string ( "Float" ) );
     message1.addField ( 1.2345678, string ( "Double" ) );
 

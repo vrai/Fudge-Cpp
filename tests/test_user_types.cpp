@@ -18,6 +18,7 @@
 #include "fudge-cpp/codec.hpp"
 #include "fudge/codec.h"
 #include "fudge/message.h"
+#include <stdio.h>
 
 // Example user types
 namespace
@@ -232,7 +233,7 @@ DEFINE_TEST( UserTypeHandling )
 
     // Construct a test message with user and built-in types
     message message1;
-    message1.addField ( 2147483648ll, string ( "bigint" ) );
+    message1.addField ( static_cast<fudge_i64> ( 2147483648ll ), string ( "bigint" ) );
     ExampleIp4::addField ( message1, string ( "localhost" ), localhost );
     ExampleIp4::addField ( message1, string ( "opendns" ), opendns );
     ExampleTick::addField ( message1, string ( "tick" ), tick );

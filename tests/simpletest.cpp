@@ -15,13 +15,13 @@
  */
 #include "simpletest.hpp"
 #include <stdio.h>
-#ifndef FUDGE_HAVE_MATH_H
+#ifdef FUDGE_HAVE_MATH_H
 #   include <math.h>
 #endif
 #ifdef FUDGE_HAVE_TIME_H
 #   include <time.h>
 #endif
-#ifndef FUDGE_HAVE_STDLIB_H
+#ifdef FUDGE_HAVE_STDLIB_H
 #   include <stdlib.h>
 #endif
 #include "ansi_compat.h"

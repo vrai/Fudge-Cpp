@@ -17,6 +17,7 @@
 #define INC_FUDGE_CPP_SIMPLETEST_HPP
 
 #include "fudge-cpp/fudge.hpp"
+#include <fudge/platform.h>
 #include <iostream>
 #include <list>
 #include <vector>
