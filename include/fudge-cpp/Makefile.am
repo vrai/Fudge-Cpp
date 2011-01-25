@@ -22,6 +22,7 @@ libfudgecpp_include_HEADERS = codec.hpp         \
                               field.hpp         \
                               fudge.hpp         \
                               message.hpp       \
+			      optional.hpp	\
                               string.hpp
 
 distclean-local:
