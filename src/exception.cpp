@@ -29,6 +29,11 @@ exception::exception ( const exception & source )
 {
 }
 
+const char * exception::what ( ) const throw ( )
+{
+    return FudgeStatus_strerror ( m_status );
+}
+
 FudgeStatus exception::status ( ) const
 {
     return m_status;

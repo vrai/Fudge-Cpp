@@ -28,6 +28,8 @@ class exception : public std::runtime_error
         exception ( FudgeStatus status );
         exception ( const exception & source );
 
+        const char * what ( ) const throw ( );
+
         FudgeStatus status ( ) const;
 
         static void throwOnError ( FudgeStatus status );

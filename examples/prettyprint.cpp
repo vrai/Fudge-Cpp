@@ -17,6 +17,7 @@
 #include <fudge-cpp/fudge.hpp>
 #include <fstream>
 #include <iostream>
+#include <iomanip>
 #include <sstream>
 
 // Output functions
@@ -24,6 +25,9 @@ void outputEnvelope ( const fudge::envelope & envelope );
 void outputMessage ( const fudge::message & message, unsigned int indent );
 void outputField ( const fudge::field & field, unsigned int indent );
 void outputString ( const fudge::string & string );
+void outputDate ( const fudge::date & date );
+void outputTime ( const fudge::time & time );
+void outputDateTime ( const fudge::datetime & datetime );
 template<class T> void outputArrayField ( const fudge::field & field, const std::string & format, size_t truncate );
 template<class T> void outputArray ( const std::vector<T> & array, const std::string & format, size_t truncate );
 std::string typeAsString ( fudge_type_id type );
@@ -127,6 +131,9 @@ void outputField ( const fudge::field & field, unsigned int indent )
         case FUDGE_TYPE_FLOAT_ARRAY:    outputArrayField<fudge_f32> ( field, "%f", 4 ); break;
         case FUDGE_TYPE_DOUBLE_ARRAY:   outputArrayField<fudge_f64> ( field, "%f", 4 ); break;
         case FUDGE_TYPE_STRING:         outputString ( field.getString ( ) ); break;
+        case FUDGE_TYPE_DATE:           outputDate ( field.getDate ( ) ); break;
+        case FUDGE_TYPE_TIME:           outputTime ( field.getTime ( ) ); break;
+        case FUDGE_TYPE_DATETIME:       outputDateTime ( field.getDateTime ( ) ); break;
         case FUDGE_TYPE_BYTE_ARRAY:
         case FUDGE_TYPE_BYTE_ARRAY_4:
         case FUDGE_TYPE_BYTE_ARRAY_8:
@@ -162,6 +169,44 @@ void outputField ( const fudge::field & field, unsigned int indent )
 void outputString ( const fudge::string & string )
 {
     std::cout << "\"" + string.convertToStdString ( ) + "\"";
+}
+
+void outputDate ( const fudge::date & date )
+{
+    std::cout << date.year ( ) << "/" << static_cast<int> ( date.month ( ) ) << "/" << static_cast<int> ( date.day ( ) );
+}
+
+void outputTime ( const fudge::time & time )
+{
+    const uint32_t hours ( time.seconds ( ) / 3600 );
+    const uint32_t minutes ( ( time.seconds ( ) - ( hours * 3600 ) ) / 60 );
+    const uint32_t seconds ( time.seconds ( ) - ( hours * 3600 ) - ( minutes * 60 ) );
+
+    std::cout << std::setw ( 2 ) << std::setfill ( '0' ) << hours << ":"
+              << std::setw ( 2 ) << std::setfill ( '0' ) << minutes << ":"
+              << std::setw ( 2 ) << std::setfill ( '0' ) << seconds << "."
+              << time.nanoseconds ( );
+
+    if ( time.hasTimezone ( ) )
+    {
+        std::cout << "UTC";
+        if ( time.timezoneOffset ( ) )
+        {
+            if ( time.timezoneOffset ( ) >= 0 )
+                std::cout << '+';
+            if ( time.timezoneOffset ( ) % 4 )
+                std::cout << ( static_cast<float> ( time.timezoneOffset ( ) ) / 4.0f );
+            else
+                std::cout << ( time.timezoneOffset ( ) / 4 );
+        }
+    }
+}
+
+void outputDateTime ( const fudge::datetime & datetime )
+{
+    outputDate ( datetime );
+    std::cout << " ";
+    outputTime ( datetime );
 }
 
 template<class T> void outputArrayField ( const fudge::field & field, const std::string & format, size_t truncate )
@@ -213,6 +258,9 @@ std::string typeAsString ( fudge_type_id type )
         case FUDGE_TYPE_DOUBLE_ARRAY:   return "double[]";  break;
         case FUDGE_TYPE_STRING:         return "string";    break;
         case FUDGE_TYPE_FUDGE_MSG:      return "message";   break;
+        case FUDGE_TYPE_DATE:           return "date";      break;
+        case FUDGE_TYPE_TIME:           return "time";      break;
+        case FUDGE_TYPE_DATETIME:       return "datetime";  break;
         default:                                            break;
     }
 
