@@ -1,12 +1,12 @@
 /**
- * Copyright (C) 2010 - 2010, Vrai Stacey.
- * 
+ * Copyright (C) 2010 - 2011, Vrai Stacey.
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- *     
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -47,8 +47,8 @@ class field
 
         FudgeMsg getMessage ( ) const;
 
-        date getDate ( ) const;       
-        time getTime ( ) const;       
+        date getDate ( ) const;
+        time getTime ( ) const;
         datetime getDateTime ( ) const;
 
         size_t getArray ( std::vector<fudge_byte> & target ) const;
@@ -57,6 +57,7 @@ class field
         size_t getArray ( std::vector<fudge_i64> & target ) const;
         size_t getArray ( std::vector<fudge_f32> & target ) const;
         size_t getArray ( std::vector<fudge_f64> & target ) const;
+        size_t numelements ( ) const;
 
         bool getAsBoolean ( ) const;
         fudge_byte getAsByte ( ) const;

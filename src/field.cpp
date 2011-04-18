@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2010 - 2010, Vrai Stacey.
+ * Copyright (C) 2010 - 2011, Vrai Stacey.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,8 +36,8 @@ namespace
     }
 
     template<class Type> inline size_t getArrayImpl ( fudge_type_id type,
-                                                        const FudgeField & field,
-                                                        std::vector<Type> & target )
+                                                      const FudgeField & field,
+                                                      std::vector<Type> & target )
     {
         if ( field.type != type )
             throw fudge::exception ( FUDGE_INVALID_TYPE_ACCESSOR );
@@ -227,6 +227,37 @@ size_t field::getArray ( std::vector<fudge_f32> & target ) const
 size_t field::getArray ( std::vector<fudge_f64> & target ) const
 {
     return getArrayImpl<fudge_f64> ( FUDGE_TYPE_DOUBLE_ARRAY, m_field, target );
+}
+
+size_t field::numelements ( ) const
+{
+    size_t width;
+    switch ( m_field.type )
+    {
+        // Variable width types
+        case FUDGE_TYPE_BYTE_ARRAY:   width = sizeof ( fudge_byte ); break;
+        case FUDGE_TYPE_SHORT_ARRAY:  width = sizeof ( fudge_i16 ); break;
+        case FUDGE_TYPE_INT_ARRAY:    width = sizeof ( fudge_i32 ); break;
+        case FUDGE_TYPE_LONG_ARRAY:   width = sizeof ( fudge_i64 ); break;
+        case FUDGE_TYPE_FLOAT_ARRAY:  width = sizeof ( fudge_f32 ); break;
+        case FUDGE_TYPE_DOUBLE_ARRAY: width = sizeof ( fudge_f64 ); break;
+
+        // Fixed width types - can only be one size
+        case FUDGE_TYPE_BYTE_ARRAY_4:   return 4;
+        case FUDGE_TYPE_BYTE_ARRAY_8:   return 8;
+        case FUDGE_TYPE_BYTE_ARRAY_16:  return 16;
+        case FUDGE_TYPE_BYTE_ARRAY_20:  return 20;
+        case FUDGE_TYPE_BYTE_ARRAY_32:  return 32;
+        case FUDGE_TYPE_BYTE_ARRAY_64:  return 64;
+        case FUDGE_TYPE_BYTE_ARRAY_128: return 128;
+        case FUDGE_TYPE_BYTE_ARRAY_256: return 256;
+        case FUDGE_TYPE_BYTE_ARRAY_512: return 512;
+
+        // Not an array
+        default:
+            throw fudge::exception ( FUDGE_INVALID_TYPE_ACCESSOR );
+    }
+    return m_field.numbytes / width;
 }
 
 }

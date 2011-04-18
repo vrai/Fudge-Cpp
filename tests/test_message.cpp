@@ -177,6 +177,10 @@ DEFINE_TEST( FieldFunctions )
     TEST_THROWS_EXCEPTION( message1.getField ( string ( "null string" ) ), exception );
     TEST_THROWS_EXCEPTION( message1.getField ( string ( "Bytes" ) ), exception );
 
+    TEST_THROWS_EXCEPTION( fields [ 0  ].numelements ( ), exception );
+    TEST_THROWS_EXCEPTION( fields [ 2  ].numelements ( ), exception );
+    TEST_THROWS_EXCEPTION( fields [ 16 ].numelements ( ), exception );
+
     // Check the fixed array message
     message2 = fields [ 11 ].getMessage ( );
     TEST_EQUALS_INT( message2.size ( ), 9 );
@@ -184,30 +188,39 @@ DEFINE_TEST( FieldFunctions )
 
     TEST_EQUALS_INT( fields [ 0 ].type ( ), FUDGE_TYPE_BYTE_ARRAY_4 );
     TEST_EQUALS_INT( fields [ 0 ].numbytes ( ), 4 );
+    TEST_EQUALS_INT( fields [ 0 ].numelements ( ), 4 );
     TEST_EQUALS_MEMORY( fields [ 0 ].bytes ( ), 4, largeByteArray, 4 );
     TEST_EQUALS_INT( fields [ 1 ].type ( ), FUDGE_TYPE_BYTE_ARRAY_8 );
     TEST_EQUALS_INT( fields [ 1 ].numbytes ( ), 8 );
+    TEST_EQUALS_INT( fields [ 1 ].numelements ( ), 8 );
     TEST_EQUALS_MEMORY( fields [ 1 ].bytes ( ), 8, largeByteArray, 8 );
     TEST_EQUALS_INT( fields [ 2 ].type ( ), FUDGE_TYPE_BYTE_ARRAY_16 );
     TEST_EQUALS_INT( fields [ 2 ].numbytes ( ), 16 );
+    TEST_EQUALS_INT( fields [ 2 ].numelements ( ), 16 );
     TEST_EQUALS_MEMORY( fields [ 2 ].bytes ( ), 16, largeByteArray, 16 );
     TEST_EQUALS_INT( fields [ 3 ].type ( ), FUDGE_TYPE_BYTE_ARRAY_20 );
     TEST_EQUALS_INT( fields [ 3 ].numbytes ( ), 20 );
+    TEST_EQUALS_INT( fields [ 3 ].numelements ( ), 20 );
     TEST_EQUALS_MEMORY( fields [ 3 ].bytes ( ), 20, largeByteArray, 20 );
     TEST_EQUALS_INT( fields [ 4 ].type ( ), FUDGE_TYPE_BYTE_ARRAY_32 );
     TEST_EQUALS_INT( fields [ 4 ].numbytes ( ), 32 );
+    TEST_EQUALS_INT( fields [ 4 ].numelements ( ), 32 );
     TEST_EQUALS_MEMORY( fields [ 4 ].bytes ( ), 32, largeByteArray, 32 );
     TEST_EQUALS_INT( fields [ 5 ].type ( ), FUDGE_TYPE_BYTE_ARRAY_64 );
     TEST_EQUALS_INT( fields [ 5 ].numbytes ( ), 64 );
+    TEST_EQUALS_INT( fields [ 5 ].numelements ( ), 64 );
     TEST_EQUALS_MEMORY( fields [ 5 ].bytes ( ), 64, largeByteArray, 64 );
     TEST_EQUALS_INT( fields [ 6 ].type ( ), FUDGE_TYPE_BYTE_ARRAY_128 );
     TEST_EQUALS_INT( fields [ 6 ].numbytes ( ), 128 );
+    TEST_EQUALS_INT( fields [ 6 ].numelements ( ), 128 );
     TEST_EQUALS_MEMORY( fields [ 6 ].bytes ( ), 128, largeByteArray, 128 );
     TEST_EQUALS_INT( fields [ 7 ].type ( ), FUDGE_TYPE_BYTE_ARRAY_256 );
     TEST_EQUALS_INT( fields [ 7 ].numbytes ( ), 256 );
+    TEST_EQUALS_INT( fields [ 7 ].numelements ( ), 256 );
     TEST_EQUALS_MEMORY( fields [ 7 ].bytes ( ), 256, largeByteArray, 256 );
     TEST_EQUALS_INT( fields [ 8 ].type ( ), FUDGE_TYPE_BYTE_ARRAY_512 );
     TEST_EQUALS_INT( fields [ 8 ].numbytes ( ), 512 );
+    TEST_EQUALS_INT( fields [ 8 ].numelements ( ), 512 );
     TEST_EQUALS_MEMORY( fields [ 8 ].bytes ( ), 512, largeByteArray, 512 );
 
     TEST_THROWS_NOTHING( field1 = message2.getField ( 1 ) );
@@ -231,26 +244,32 @@ DEFINE_TEST( FieldFunctions )
     TEST_EQUALS_INT( fields [ 0 ].getArray ( byteArray ), 0 );
     TEST_EQUALS_INT( fields [ 1 ].type ( ), FUDGE_TYPE_BYTE_ARRAY );
     TEST_EQUALS_INT( fields [ 1 ].getArray ( byteArray ), 16 );
+    TEST_EQUALS_INT( fields [ 1 ].numelements ( ), 16 );
     TEST_EQUALS_VECTOR( byteArray, rawBytes );
     std::vector<fudge_i16> shortArray;
     TEST_EQUALS_INT( fields [ 2 ].type ( ), FUDGE_TYPE_SHORT_ARRAY );
     TEST_EQUALS_INT( fields [ 2 ].getArray ( shortArray ), 10 );
+    TEST_EQUALS_INT( fields [ 2 ].numelements ( ), 10 );
     TEST_EQUALS_VECTOR( shortArray, rawShorts );
     std::vector<fudge_i32> intArray;
     TEST_EQUALS_INT( fields [ 3 ].type ( ), FUDGE_TYPE_INT_ARRAY );
     TEST_EQUALS_INT( fields [ 3 ].getArray ( intArray ), 4 );
+    TEST_EQUALS_INT( fields [ 3 ].numelements ( ), 4 );
     TEST_EQUALS_VECTOR( intArray, rawInts );
     std::vector<fudge_i64> longArray;
     TEST_EQUALS_INT( fields [ 4 ].type ( ), FUDGE_TYPE_LONG_ARRAY );
     TEST_EQUALS_INT( fields [ 4 ].getArray ( longArray ), 12 );
+    TEST_EQUALS_INT( fields [ 4 ].numelements ( ), 12 );
     TEST_EQUALS_VECTOR( longArray, rawLongs );
     std::vector<fudge_f32> floatArray;
     TEST_EQUALS_INT( fields [ 5 ].type ( ), FUDGE_TYPE_FLOAT_ARRAY );
     TEST_EQUALS_INT( fields [ 5 ].getArray ( floatArray ), 8 );
+    TEST_EQUALS_INT( fields [ 5 ].numelements ( ), 8 );
     TEST_EQUALS_VECTOR( floatArray, rawFloats );
     std::vector<fudge_f64> doubleArray;
     TEST_EQUALS_INT( fields [ 6 ].type ( ), FUDGE_TYPE_DOUBLE_ARRAY );
     TEST_EQUALS_INT( fields [ 6 ].getArray ( doubleArray ), 5 );
+    TEST_EQUALS_INT( fields [ 6 ].numelements ( ), 5 );
     TEST_EQUALS_VECTOR( doubleArray, rawDoubles );
 
     TEST_THROWS_NOTHING( field1 = message2.getField ( string ( "Bytes" ) ) );
