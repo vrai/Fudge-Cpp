@@ -40,6 +40,9 @@ class message
         field getField ( const string & name ) const;
         field getField ( fudge_i16 ordinal ) const;
 
+        bool getField ( field & target, const string & name ) const;
+        bool getField ( field & target, fudge_i16 ordinal ) const;
+
         void getFields ( std::vector<field> & fields ) const;
 
         void addField ( const optional<string> & name = noname, const optional<fudge_i16> ordinal = noordinal );
@@ -81,7 +84,7 @@ class message
         void addField128ByteArray ( const fudge_byte * bytes, const optional<string> & name = noname, const optional<fudge_i16> ordinal = noordinal );
         void addField256ByteArray ( const fudge_byte * bytes, const optional<string> & name = noname, const optional<fudge_i16> ordinal = noordinal );
         void addField512ByteArray ( const fudge_byte * bytes, const optional<string> & name = noname, const optional<fudge_i16> ordinal = noordinal );
-        
+
         void addFieldData ( fudge_type_id type,
                             FudgeFieldData * data,
                             fudge_i32 numbytes,

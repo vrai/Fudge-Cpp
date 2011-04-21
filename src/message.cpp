@@ -119,6 +119,40 @@ field message::getField ( fudge_i16 ordinal ) const
     return raw;
 }
 
+bool message::getField ( field & target, const string & name ) const
+{
+    FudgeStatus status;
+    FudgeField raw;
+    if ( ( status = FudgeMsg_getFieldByName ( &raw, m_message, name.raw ( ) ) ) != FUDGE_OK )
+    {
+        if ( status != FUDGE_INVALID_NAME )
+            exception::throwOnError ( status );
+        return false;
+    }
+    else
+    {
+        target = field ( raw );
+        return true;
+    }
+}
+
+bool message::getField ( field & target, fudge_i16 ordinal ) const
+{
+    FudgeStatus status;
+    FudgeField raw;
+    if ( ( status = FudgeMsg_getFieldByOrdinal ( &raw, m_message, ordinal ) ) != FUDGE_OK )
+    {
+        if ( status != FUDGE_INVALID_ORDINAL )
+            exception::throwOnError ( status );
+        return false;
+    }
+    else
+    {
+        target = field ( raw );
+        return true;
+    }
+}
+
 void message::getFields ( std::vector<field> & fields ) const
 {
     fields.clear ( );
