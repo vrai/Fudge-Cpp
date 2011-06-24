@@ -22,7 +22,8 @@ TESTS = test_exception  \
 
 check_PROGRAMS = $(TESTS)
 
-noinst_HEADERS = simpletest.hpp
+noinst_HEADERS = simpletest.hpp \
+		 ansi_compat.h
 
 INCLUDES = -I$(top_srcdir)/include \
            -I$(top_srcdir)/src
