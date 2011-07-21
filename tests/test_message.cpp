@@ -405,20 +405,30 @@ DEFINE_TEST( FieldCoercion )
         TEST_THROWS_EXCEPTION( longint = fields [ index ].getAsInt64 ( ), exception );
 
     fudge_f32 floatval;
-    for ( size_t index ( 0 ); index < 8; ++index )
+    for ( size_t index ( 0 ); index < 3; ++index )
         TEST_THROWS_EXCEPTION( floatval = fields [ index ].getAsFloat32 ( ), exception );
-    TEST_THROWS_NOTHING( floatval = fields [ 8 ].getAsFloat32 ( ) );    TEST_EQUALS_FLOAT( floatval, 0.0f, 0.001f );        // Zero float
-    TEST_THROWS_NOTHING( floatval = fields [ 9 ].getAsFloat32 ( ) );    TEST_EQUALS_FLOAT( floatval, -1.234f, 0.001f );     // Non-zero float
-    TEST_THROWS_NOTHING( floatval = fields [ 10 ].getAsFloat32 ( ) );   TEST_EQUALS_FLOAT( floatval, 0.0f, 0.001f );        // Zero double
-    TEST_THROWS_NOTHING( floatval = fields [ 11 ].getAsFloat32 ( ) );   TEST_EQUALS_FLOAT( floatval, 123.4567f, 0.0001f );  // Non-zero double
+    TEST_THROWS_NOTHING( floatval = fields [ 3 ].getAsFloat32 ( ) );    TEST_EQUALS_FLOAT( floatval, 0.0f, 0.001f );            // Zero byte
+    TEST_THROWS_NOTHING( floatval = fields [ 4 ].getAsFloat32 ( ) );    TEST_EQUALS_FLOAT( floatval, -42.0f, 0.001f );          // Non-zero byte
+    TEST_THROWS_NOTHING( floatval = fields [ 5 ].getAsFloat32 ( ) );    TEST_EQUALS_FLOAT( floatval, 256.0f, 0.001f );          // Non-zero short 
+    TEST_THROWS_NOTHING( floatval = fields [ 6 ].getAsFloat32 ( ) );    TEST_EQUALS_FLOAT( floatval, -40000.0f, 0.001f );       // Non-zero int 
+    TEST_THROWS_NOTHING( floatval = fields [ 7 ].getAsFloat32 ( ) );    TEST_EQUALS_FLOAT( floatval, 10000000000.0f, 0.001f );  // Non-zero long
+    TEST_THROWS_NOTHING( floatval = fields [ 8 ].getAsFloat32 ( ) );    TEST_EQUALS_FLOAT( floatval, 0.0f, 0.001f );            // Zero float
+    TEST_THROWS_NOTHING( floatval = fields [ 9 ].getAsFloat32 ( ) );    TEST_EQUALS_FLOAT( floatval, -1.234f, 0.001f );         // Non-zero float
+    TEST_THROWS_NOTHING( floatval = fields [ 10 ].getAsFloat32 ( ) );   TEST_EQUALS_FLOAT( floatval, 0.0f, 0.001f );            // Zero double
+    TEST_THROWS_NOTHING( floatval = fields [ 11 ].getAsFloat32 ( ) );   TEST_EQUALS_FLOAT( floatval, 123.4567f, 0.0001f );      // Non-zero double
 
     fudge_f64 doubleval;
-    for ( size_t index ( 0 ); index < 8; ++index )
+    for ( size_t index ( 0 ); index < 3; ++index )
         TEST_THROWS_EXCEPTION( doubleval = fields [ index ].getAsFloat64 ( ), exception );
-    TEST_THROWS_NOTHING( doubleval = fields [ 8 ].getAsFloat64 ( ) );   TEST_EQUALS_FLOAT( doubleval, 0.0, 0.001 );         // Zero float
-    TEST_THROWS_NOTHING( doubleval = fields [ 9 ].getAsFloat64 ( ) );   TEST_EQUALS_FLOAT( doubleval, -1.234, 0.001 );      // Non-zero float
-    TEST_THROWS_NOTHING( doubleval = fields [ 10 ].getAsFloat64 ( ) );  TEST_EQUALS_FLOAT( doubleval, 0.0, 0.0001 );        // Zero double
-    TEST_THROWS_NOTHING( doubleval = fields [ 11 ].getAsFloat64 ( ) );  TEST_EQUALS_FLOAT( doubleval, 123.4567, 0.0001 );   // Non-zero double
+    TEST_THROWS_NOTHING( doubleval = fields [ 3 ].getAsFloat64 ( ) );    TEST_EQUALS_FLOAT( doubleval, 0.0f, 0.001f );            // Zero byte
+    TEST_THROWS_NOTHING( doubleval = fields [ 4 ].getAsFloat64 ( ) );    TEST_EQUALS_FLOAT( doubleval, -42.0f, 0.001f );          // Non-zero byte
+    TEST_THROWS_NOTHING( doubleval = fields [ 5 ].getAsFloat64 ( ) );    TEST_EQUALS_FLOAT( doubleval, 256.0f, 0.001f );          // Non-zero short 
+    TEST_THROWS_NOTHING( doubleval = fields [ 6 ].getAsFloat64 ( ) );    TEST_EQUALS_FLOAT( doubleval, -40000.0f, 0.001f );       // Non-zero int 
+    TEST_THROWS_NOTHING( doubleval = fields [ 7 ].getAsFloat64 ( ) );    TEST_EQUALS_FLOAT( doubleval, 10000000000.0f, 0.001f );  // Non-zero long
+    TEST_THROWS_NOTHING( doubleval = fields [ 8 ].getAsFloat64 ( ) );    TEST_EQUALS_FLOAT( doubleval, 0.0, 0.001 );              // Zero float
+    TEST_THROWS_NOTHING( doubleval = fields [ 9 ].getAsFloat64 ( ) );    TEST_EQUALS_FLOAT( doubleval, -1.234, 0.001 );           // Non-zero float
+    TEST_THROWS_NOTHING( doubleval = fields [ 10 ].getAsFloat64 ( ) );   TEST_EQUALS_FLOAT( doubleval, 0.0, 0.0001 );             // Zero double
+    TEST_THROWS_NOTHING( doubleval = fields [ 11 ].getAsFloat64 ( ) );   TEST_EQUALS_FLOAT( doubleval, 123.4567, 0.0001 );        // Non-zero double
 
     string stringval;
     TEST_THROWS_NOTHING( stringval = fields [ 12 ].getAsString ( ) );   TEST_EQUALS_TRUE( stringval == string ( "This is a string" ) );
