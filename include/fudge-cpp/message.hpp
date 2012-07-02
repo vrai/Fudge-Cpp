@@ -55,7 +55,7 @@ class message
         void addField ( fudge_f32 value,  const optional<string> & name = noname, const optional<fudge_i16> ordinal = noordinal );
         void addField ( fudge_f64 value,  const optional<string> & name = noname, const optional<fudge_i16> ordinal = noordinal );
 
-        void addField ( message & value, const optional<string> & name = noname, const optional<fudge_i16> ordinal = noordinal );
+        void addField ( const message & value, const optional<string> & name = noname, const optional<fudge_i16> ordinal = noordinal );
 
         void addField ( const std::vector<fudge_byte> & value, const optional<string> & name = noname, const optional<fudge_i16> ordinal = noordinal );
         void addField ( const std::vector<fudge_i16> & value,  const optional<string> & name = noname, const optional<fudge_i16> ordinal = noordinal );

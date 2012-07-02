@@ -13,6 +13,7 @@ runtest.bat
 *.tar.gz
 test
 *.deps
+.DS_Store
 Makefile
 Makefile.in
 _configs.sed

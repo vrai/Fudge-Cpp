@@ -214,7 +214,7 @@ void message::addField ( fudge_f64 value, const optional<string> & name, const o
     addFieldImpl<fudge_f64> ( m_message, &FudgeMsg_addFieldF64, value, name, ordinal );
 }
 
-void message::addField ( message & value, const optional<string> & name, const optional<fudge_i16> ordinal )
+void message::addField ( const message & value, const optional<string> & name, const optional<fudge_i16> ordinal )
 {
     exception::throwOnError ( FudgeMsg_addFieldMsg ( m_message, convertNameArg ( name ), convertOrdinalArg ( ordinal ), value.raw ( ) ) );
 }
