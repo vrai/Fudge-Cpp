@@ -24,6 +24,9 @@
 #ifdef FUDGE_HAVE_STDLIB_H
 #   include <stdlib.h>
 #endif
+#ifdef FUDGE_HAVE_UNISTD_H
+#   include <unistd.h>
+#endif
 #include "ansi_compat.h"
 
 namespace
